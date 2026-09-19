@@ -206,6 +206,130 @@
       color: white;
     }
 
+    .login-shell,
+    .teacher-panel,
+    .dashboard-box,
+    .assignment-box {
+      background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+      border: 2px solid #dfeaf8;
+      border-radius: 18px;
+      box-shadow: 0 12px 22px rgba(59,130,246,0.06);
+      padding: 18px;
+    }
+    .login-shell {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .login-grid,
+    .dashboard-grid,
+    .assignment-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin-top: 18px;
+    }
+    .auth-field {
+      width: 100%;
+      margin-top: 10px;
+      border: 2px solid #dbeaf7;
+      border-radius: 12px;
+      padding: 12px;
+      font: inherit;
+    }
+    .tiny-note {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    .sound-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0 18px;
+    }
+    .sound-pill {
+      border: 2px solid #dbeafe;
+      background: linear-gradient(180deg, #eef6ff 0%, #f8fbff 100%);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .sound-pill:hover {
+      background: #dbeafe;
+    }
+    .book-grid,
+    .story-grid,
+    .rhyme-grid,
+    .tense-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .mini-book,
+    .story-card,
+    .rhyme-card,
+    .tense-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f6fbff 100%);
+      border: 2px solid #dfeaf8;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 10px 20px rgba(59,130,246,0.07);
+    }
+    .book-image,
+    .story-image,
+    .rhyme-image {
+      display: grid;
+      place-items: center;
+      min-height: 140px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      font-size: 3.2rem;
+      color: white;
+      font-weight: 700;
+    }
+    .mini-book h3,
+    .story-card h3,
+    .rhyme-card h3,
+    .tense-card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+    .book-page {
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 8px 10px;
+      margin-top: 8px;
+      font-size: 0.95rem;
+    }
+    .rhyme-option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border: 2px solid #dbeaf7;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-top: 8px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .rhyme-option.correct { background: #dcfce7; border-color: #22c55e; }
+    .rhyme-option.wrong { background: #fee2e2; border-color: #ef4444; }
+    .story-writing-box {
+      width: 100%;
+      min-height: 100px;
+      margin-top: 12px;
+      border-radius: 12px;
+      border: 2px solid #dbeaf7;
+      padding: 12px;
+      font: inherit;
+      resize: vertical;
+    }
     .section-grid {
       display: grid;
       grid-template-columns: 1.1fr .9fr;
@@ -558,10 +682,17 @@
     <button class="nav-btn active" data-target="read">Read & Colour</button>
     <button class="nav-btn" data-target="phonics">Phonics</button>
     <button class="nav-btn" data-target="reading">Reading</button>
+    <button class="nav-btn" data-target="books">Books</button>
     <button class="nav-btn" data-target="hfw">HFW Memory</button>
     <button class="nav-btn" data-target="vocabulary">Vocabulary</button>
+    <button class="nav-btn" data-target="rhymes">Rhymes</button>
+    <button class="nav-btn" data-target="grammar">Grammar</button>
+    <button class="nav-btn" data-target="story">Story</button>
+    <button class="nav-btn" data-target="readingcomp">Comprehension</button>
     <button class="nav-btn" data-target="matching">Matching</button>
     <button class="nav-btn" data-target="accounts">Accounts</button>
+    <button class="nav-btn" data-target="login">Login</button>
+    <button class="nav-btn" data-target="teacher">Teacher</button>
     <button class="nav-btn" data-target="ai">AI Helper</button>
   </nav>
 
@@ -620,6 +751,7 @@
       <p>Start with the first six sounds and build early CVC words before moving to more reading work.</p>
       <div class="prompt-box">
         <h3>Blend and read</h3>
+        <div class="sound-pills" id="readingSoundButtons"></div>
         <div id="blendWordPrompt" class="sentence">sat</div>
         <div class="button-row">
           <button class="btn" onclick="speakText(getCurrentBlendWord())">Listen</button>
@@ -631,6 +763,19 @@
         </div>
         <div id="blendFeedback" class="feedback" aria-live="polite"></div>
       </div>
+      <div id="cvcWordGrid" class="word-grid" style="margin-top:18px;"></div>
+    </section>
+
+    <section id="books" class="game-card">
+      <h2>Phase 2 Reading Books</h2>
+      <p>Short decodable books with simple images and familiar sounds to support early readers.</p>
+      <div id="phaseBooks" class="book-grid"></div>
+    </section>
+
+    <section id="readingcomp" class="game-card">
+      <h2>Reading Comprehension</h2>
+      <p>Read the short text, then answer the questions. This is designed for ages 5–11 and follows a gradual increase in challenge.</p>
+      <div id="readingCompBoard" class="prompt-box"></div>
     </section>
 
     <section id="hfw" class="game-card">
@@ -645,6 +790,24 @@
       <h2>Vocabulary</h2>
       <p>Listen to the word, look at the picture and match it to the correct classroom object.</p>
       <div id="vocabGrid" class="word-grid"></div>
+    </section>
+
+    <section id="rhymes" class="game-card">
+      <h2>Find the Rhyming Words</h2>
+      <p>Look at the picture and choose the word that rhymes with the first one.</p>
+      <div id="rhymeGame" class="rhyme-grid"></div>
+    </section>
+
+    <section id="grammar" class="game-card">
+      <h2>Grammar: Tenses</h2>
+      <p>Practise the difference between past, present and future using simple sentences.</p>
+      <div id="tenseCards" class="tense-grid"></div>
+    </section>
+
+    <section id="story" class="game-card">
+      <h2>Write a Story for KS2</h2>
+      <p>Look closely at the picture. Describe it, use interesting adjectives and write a short story in paragraphs.</p>
+      <div id="storyPromptGrid" class="story-grid"></div>
     </section>
 
     <section id="matching" class="game-card">
@@ -676,6 +839,60 @@
           <h3>Teacher overview</h3>
           <div id="studentOverview"></div>
         </div>
+      </div>
+    </section>
+
+    <section id="login" class="game-card">
+      <h2>Student Login</h2>
+      <div class="login-shell">
+        <div class="dashboard-box">
+          <h3>Sign in</h3>
+          <input id="loginName" class="auth-field" type="text" placeholder="teacher@missjo.co.uk or student name" />
+          <input id="loginPin" class="auth-field" type="password" placeholder="Teacher PIN: MissJo2026!" />
+          <div class="button-row">
+            <button class="btn success" onclick="loginUser()">Log in</button>
+            <button class="btn secondary" onclick="logoutUser()">Log out</button>
+          </div>
+          <div class="tiny-note">Preview teacher login: teacher@missjo.co.uk / MissJo2026! This is a sample preview account for testing only and should be changed before publishing to a live school site.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="teacher" class="game-card">
+      <h2>Teacher Dashboard</h2>
+      <div class="dashboard-grid">
+        <div class="teacher-panel">
+          <h3>Add a student</h3>
+          <input id="teacherStudentName" class="auth-field" type="text" placeholder="Student name" />
+          <input id="teacherStudentPin" class="auth-field" type="password" placeholder="Student PIN" />
+          <select id="teacherStudentAge" class="auth-field">
+            <option value="early">3–5</option>
+            <option value="primary">5–7</option>
+            <option value="upper">7–11</option>
+          </select>
+          <div class="button-row">
+            <button class="btn success" onclick="teacherAddStudent()">Save student</button>
+          </div>
+        </div>
+        <div class="teacher-panel">
+          <h3>Set class work</h3>
+          <select id="assignmentStudentSelect" class="auth-field"></select>
+          <select id="assignmentType" class="auth-field">
+            <option value="read">Read & Colour</option>
+            <option value="phonics">Phonics</option>
+            <option value="story">Story writing</option>
+            <option value="grammar">Grammar</option>
+            <option value="readingcomp">Reading comprehension</option>
+          </select>
+          <input id="assignmentTask" class="auth-field" type="text" placeholder="Task title" />
+          <div class="button-row">
+            <button class="btn warning" onclick="saveAssignment()">Assign work</button>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard-box" style="margin-top:18px;">
+        <h3>Class overview</h3>
+        <div id="teacherDashboardList"></div>
       </div>
     </section>
 
@@ -743,9 +960,13 @@
       s: 's', a: 'a', t: 't', p: 'p', i: 'i', n: 'n',
       m: 'm', d: 'd', g: 'g', o: 'o', c: 'c', k: 'k',
       ck: 'k', e: 'e', u: 'u', r: 'r', h: 'h', b: 'b',
+      ff: 'ff', ll: 'll', ss: 'ss', zz: 'zz', qu: 'qu',
       ch: 'ch', sh: 'sh', th: 'th', ng: 'ng', ai: 'ai', ee: 'ee',
       bl: 'bl', st: 'st', tr: 'tr', cl: 'cl', mp: 'mp', nd: 'nd',
-      ay: 'ay', igh: 'igh', oa: 'oa', oo: 'oo', ow: 'ow', ie: 'ie'
+      ay: 'ay', igh: 'igh', oa: 'oa', oo: 'oo', ow: 'ow', ie: 'ie',
+      or: 'or', air: 'air', ar: 'ar', er: 'er', ur: 'ur', oi: 'oi',
+      ue: 'ue', oo: 'oo', aw: 'aw', ea: 'ea', ir: 'ir', oy: 'oy',
+      ph: 'ph', wh: 'wh', kn: 'kn', gn: 'gn', wr: 'wr'
     };
 
     const jollySoundTips = {
@@ -767,6 +988,11 @@
       r: 'Say the sound as /r/ like a rolling sound.',
       h: 'Say the sound as /h/ like a big breath out.',
       b: 'Say the sound as /b/ like a bouncing ball.',
+      ff: 'Say the sound as /f/ like in “off”.',
+      ll: 'Say the sound as /l/ like in “fall”.',
+      ss: 'Say the sound as /s/ like in “lass”.',
+      zz: 'Say the sound as /z/ like in “buzz”.',
+      qu: 'Say the sound as /qu/ like in “queen”.',
       ch: 'Say the sound as /ch/ like in “chip”.',
       sh: 'Say the sound as /sh/ like a quiet shhh.',
       th: 'Say the sound as /th/ like in “thumb”.',
@@ -784,7 +1010,23 @@
       oa: 'Say the sound as /oa/ like in “boat”.',
       oo: 'Say the sound as /oo/ like in “book”.',
       ow: 'Say the sound as /ow/ like in “cow”.',
-      ie: 'Say the sound as /ie/ like in “pie”.'
+      ie: 'Say the sound as /ie/ like in “pie”.',
+      or: 'Say the sound as /or/ like in “for”.',
+      air: 'Say the sound as /air/ like in “chair”.',
+      ar: 'Say the sound as /ar/ like in “car”.',
+      er: 'Say the sound as /er/ like in “her”.',
+      ur: 'Say the sound as /ur/ like in “fur”.',
+      oi: 'Say the sound as /oi/ like in “coin”.',
+      ue: 'Say the sound as /ue/ like in “blue”.',
+      aw: 'Say the sound as /aw/ like in “saw”.',
+      ea: 'Say the sound as /ea/ like in “sea”.',
+      ir: 'Say the sound as /ir/ like in “bird”.',
+      oy: 'Say the sound as /oy/ like in “toy”.',
+      ph: 'Say the sound as /ph/ like in “phone”.',
+      wh: 'Say the sound as /wh/ like in “whale”.',
+      kn: 'Say the sound as /kn/ like in “knee”.',
+      gn: 'Say the sound as /gn/ like in “gnome”.',
+      wr: 'Say the sound as /wr/ like in “write”.'
     };
 
     const readTasks = {
@@ -844,7 +1086,10 @@
       memoryMatched: new Set(),
       memoryWords: [],
       memoryPairsFound: 0,
-      memoryMoves: 0
+      memoryMoves: 0,
+      users: loadUsers(),
+      loggedInUser: null,
+      assignments: loadAssignments()
     };
 
     function loadRewards() {
@@ -892,6 +1137,63 @@
           </div>
         </div>
       `;
+    }
+
+    function hashText(value) {
+      const text = String(value).trim();
+      if (!text) return '';
+      if (window.crypto && crypto.subtle && window.TextEncoder) {
+        const bytes = new TextEncoder().encode(text);
+        return crypto.subtle.digest('SHA-256', bytes).then((buffer) => {
+          const hex = [...new Uint8Array(buffer)].map((b) => b.toString(16).padStart(2, '0')).join('');
+          return hex;
+        });
+      }
+      return Promise.resolve(text);
+    }
+
+    function loadUsers() {
+      const stored = localStorage.getItem('missJoEALUsers');
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length) return parsed;
+        } catch (error) {}
+      }
+      const defaults = [
+        { id: 'teacher-1', name: 'teacher@missjo.co.uk', pinHash: 'MissJo2026!', role: 'teacher', ageGroup: 'upper' },
+        { id: 'student-demo', name: 'Student One', pinHash: 'student123', role: 'student', ageGroup: 'primary' }
+      ];
+      localStorage.setItem('missJoEALUsers', JSON.stringify(defaults));
+      return defaults;
+    }
+
+    function saveUsers() {
+      localStorage.setItem('missJoEALUsers', JSON.stringify(state.users));
+    }
+
+    function loadAssignments() {
+      const stored = localStorage.getItem('missJoEALAssignments');
+      try {
+        return stored ? JSON.parse(stored) : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveAssignments() {
+      localStorage.setItem('missJoEALAssignments', JSON.stringify(state.assignments));
+    }
+
+    function ensureUserHasHash(userName, pin, role) {
+      const cleaned = String(userName).trim();
+      if (!cleaned) return null;
+      const user = state.users.find((item) => item.name.toLowerCase() === cleaned.toLowerCase() && item.role === role);
+      if (user) return user;
+      const newUser = { id: `${role}-${Date.now()}`, name: cleaned, pinHash: '', role, ageGroup: role === 'teacher' ? 'upper' : 'primary' };
+      state.users.push(newUser);
+      saveUsers();
+      return newUser;
     }
 
     function loadStudents() {
@@ -1057,10 +1359,13 @@
       return lookup[value.toLowerCase()] || value;
     }
 
+    let selectedColourPart = null;
+
     function drawReadScene(task) {
       const svg = document.getElementById('sceneSvg');
       const swatches = document.getElementById('colourSwatches');
       const colors = ['blue', 'orange', 'green', 'purple', 'pink', 'red', 'brown', 'black', 'white', 'yellow'];
+      selectedColourPart = null;
       swatches.innerHTML = colors.map((color) => `
         <button class="swatch" data-colour="${color}" style="background:${colourToHex(color)};" aria-label="${color}"></button>
       `).join('');
@@ -1068,13 +1373,21 @@
       swatches.querySelectorAll('.swatch').forEach((button) => {
         button.addEventListener('click', () => {
           const selectedColour = button.dataset.colour;
-          const target = getColourTarget(task);
+          const target = selectedColourPart || getColourTarget(task);
           if (target) {
             const part = document.getElementById(`part-${target}`);
             if (part) {
               part.setAttribute('fill', colourToHex(selectedColour));
             }
           }
+        });
+      });
+
+      svg.querySelectorAll('[id^="part-"]').forEach((part) => {
+        part.style.cursor = 'pointer';
+        part.addEventListener('click', () => {
+          const targetName = part.id.replace('part-', '');
+          selectedColourPart = targetName;
         });
       });
 
@@ -1448,6 +1761,89 @@
       }
     }
 
+    const cvcWordBank = [
+      { word: 'sat', image: '🐱', sound: 'sat' },
+      { word: 'pan', image: '🥐', sound: 'pan' },
+      { word: 'dog', image: '🐶', sound: 'dog' },
+      { word: 'hat', image: '🎩', sound: 'hat' },
+      { word: 'sun', image: '☀️', sound: 'sun' },
+      { word: 'bin', image: '🗑️', sound: 'bin' },
+      { word: 'ship', image: '🚢', sound: 'ship' },
+      { word: 'rain', image: '🌧️', sound: 'rain' }
+    ];
+
+    const phaseBooks = [
+      {
+        title: 'Sam the Cat',
+        accent: '#f472b6',
+        pages: ['Sam sat on a mat.', 'Sam saw a red hat.', 'Sam was happy and ran.'],
+        image: '🐱'
+      },
+      {
+        title: 'The Big Sun',
+        accent: '#f59e0b',
+        pages: ['The sun is up.', 'A dog is in the sun.', 'We run and laugh.'],
+        image: '☀️'
+      },
+      {
+        title: 'The Pet Fish',
+        accent: '#22c55e',
+        pages: ['The fish swims in the pond.', 'The fish is red and small.', 'We watch it glow.'],
+        image: '🐠'
+      }
+    ];
+
+    const rhymeGame = [
+      {
+        prompt: 'cat',
+        clue: 'Which word rhymes with cat?',
+        options: ['mat', 'dog', 'sun'],
+        answer: 'mat',
+        image: '🐱'
+      },
+      {
+        prompt: 'rain',
+        clue: 'Which word rhymes with rain?',
+        options: ['train', 'book', 'jump'],
+        answer: 'train',
+        image: '🌧️'
+      },
+      {
+        prompt: 'light',
+        clue: 'Which word rhymes with light?',
+        options: ['bright', 'fish', 'cup'],
+        answer: 'bright',
+        image: '💡'
+      }
+    ];
+
+    const tenseCards = [
+      { tense: 'Past', example: 'I played outside yesterday.', clue: 'It already happened.', accent: '#c084fc' },
+      { tense: 'Present', example: 'I play outside today.', clue: 'It is happening now.', accent: '#38bdf8' },
+      { tense: 'Future', example: 'I will play outside tomorrow.', clue: 'It will happen later.', accent: '#34d399' }
+    ];
+
+    const storyPrompts = [
+      {
+        title: 'Mysterious Forest',
+        image: '🌲',
+        prompt: 'Describe a forest at dusk. Use sensory details: the sounds, the smell and the colours.',
+        accent: '#22c55e'
+      },
+      {
+        title: 'Lost in the City',
+        image: '🏙️',
+        prompt: 'Write a story about a child who gets lost but finds a hidden garden.',
+        accent: '#60a5fa'
+      },
+      {
+        title: 'Castle on the Hill',
+        image: '🏰',
+        prompt: 'Describe the castle, the weather and the mysterious voice at the gate.',
+        accent: '#f59e0b'
+      }
+    ];
+
     const vocabulary = {
       classroom: [
         { word: 'book', emoji: '📘', sound: 'book' },
@@ -1482,6 +1878,90 @@
         { word: 'dance', emoji: '💃', sound: 'dance' }
       ]
     };
+
+    function renderReadingSoundButtons() {
+      const sounds = ['s', 'a', 't', 'p', 'i', 'n', 'm', 'd', 'g', 'o', 'c', 'k'];
+      const wrap = document.getElementById('readingSoundButtons');
+      if (!wrap) return;
+      wrap.innerHTML = sounds.map((sound) => `
+        <button type="button" class="sound-pill" data-sound="${sound}" onclick="speakJollySound('${sound}')">${sound}</button>
+      `).join('');
+    }
+
+    function renderCvcWordGrid() {
+      const wrap = document.getElementById('cvcWordGrid');
+      if (!wrap) return;
+      wrap.innerHTML = cvcWordBank.map((item) => `
+        <button class="word-card" data-word="${item.word}" onclick="speakText('${item.sound}')">
+          <span class="emoji">${item.image}</span>
+          <span>${item.word}</span>
+        </button>
+      `).join('');
+    }
+
+    function renderPhaseBooks() {
+      const wrap = document.getElementById('phaseBooks');
+      if (!wrap) return;
+      wrap.innerHTML = phaseBooks.map((book) => `
+        <article class="mini-book">
+          <div class="book-image" style="background: linear-gradient(135deg, ${book.accent}, #60a5fa);">${book.image}</div>
+          <h3>${book.title}</h3>
+          ${book.pages.map((page) => `<div class="book-page">${page}</div>`).join('')}
+        </article>
+      `).join('');
+    }
+
+    function renderRhymeGame() {
+      const wrap = document.getElementById('rhymeGame');
+      if (!wrap) return;
+      wrap.innerHTML = rhymeGame.map((item) => `
+        <article class="rhyme-card">
+          <div class="rhyme-image" style="background: linear-gradient(135deg, #fbbf24, #f472b6);">${item.image}</div>
+          <h3>${item.prompt}</h3>
+          <p>${item.clue}</p>
+          ${item.options.map((option) => `
+            <button class="rhyme-option" onclick="checkRhymeChoice(this, '${item.answer}', '${option}')">${option}</button>
+          `).join('')}
+        </article>
+      `).join('');
+    }
+
+    function checkRhymeChoice(button, answer, option) {
+      const isCorrect = option === answer;
+      button.classList.add(isCorrect ? 'correct' : 'wrong');
+      if (isCorrect) {
+        button.textContent = `${option} ✓`;
+        speakText(option);
+      } else {
+        button.textContent = `${option} ✗`;
+      }
+    }
+
+    function renderTenseCards() {
+      const wrap = document.getElementById('tenseCards');
+      if (!wrap) return;
+      wrap.innerHTML = tenseCards.map((card) => `
+        <article class="tense-card">
+          <div class="book-image" style="background: linear-gradient(135deg, ${card.accent}, #1d4ed8);">${card.tense}</div>
+          <h3>${card.tense}</h3>
+          <p><strong>Example:</strong> ${card.example}</p>
+          <p>${card.clue}</p>
+        </article>
+      `).join('');
+    }
+
+    function renderStoryPrompts() {
+      const wrap = document.getElementById('storyPromptGrid');
+      if (!wrap) return;
+      wrap.innerHTML = storyPrompts.map((card) => `
+        <article class="story-card">
+          <div class="story-image" style="background: linear-gradient(135deg, ${card.accent}, #818cf8);">${card.image}</div>
+          <h3>${card.title}</h3>
+          <p>${card.prompt}</p>
+          <textarea class="story-writing-box" placeholder="Write your story here..."></textarea>
+        </article>
+      `).join('');
+    }
 
     function renderVocabulary() {
       const items = vocabulary.classroom;
@@ -1606,6 +2086,139 @@
           </tbody>
         </table>
       `;
+    }
+
+    async function loginUser() {
+      const name = document.getElementById('loginName').value.trim();
+      const pin = document.getElementById('loginPin').value.trim();
+      if (!name || !pin) {
+        alert('Please enter both a name and a PIN/password.');
+        return;
+      }
+
+      const teacherPreviewUser = name.toLowerCase() === 'teacher@missjo.co.uk' || name.toLowerCase() === 'miss jo';
+      const teacherPreviewPassword = pin === 'MissJo2026!';
+      if (teacherPreviewUser && teacherPreviewPassword) {
+        state.loggedInUser = { id: 'teacher-preview', name: 'teacher@missjo.co.uk', role: 'teacher', ageGroup: 'upper' };
+        localStorage.setItem('missJoEALCurrentUser', JSON.stringify(state.loggedInUser));
+        document.getElementById('loginPin').value = '';
+        renderAccountAccess();
+        document.querySelectorAll('.game-card').forEach((card) => card.classList.remove('active'));
+        document.getElementById('teacher').classList.add('active');
+        return;
+      }
+
+      const storedUsers = state.users || [];
+      const match = storedUsers.find((user) => user.name.toLowerCase() === name.toLowerCase());
+      if (!match) {
+        alert('That username was not found. Ask the teacher to add a student account or use the teacher login.');
+        return;
+      }
+
+      const hash = await hashText(pin);
+      if (match.pinHash && match.pinHash !== hash && match.pinHash !== pin) {
+        alert('Incorrect PIN.');
+        return;
+      }
+      if (!match.pinHash) {
+        match.pinHash = pin;
+        saveUsers();
+      }
+
+      state.loggedInUser = match;
+      localStorage.setItem('missJoEALCurrentUser', JSON.stringify(match));
+      if (match.role === 'teacher') {
+        state.activeView = 'teacher';
+      } else {
+        state.activeView = 'read';
+      }
+      document.getElementById('loginPin').value = '';
+      renderTeacherDashboard();
+      renderTeacherSelection();
+      renderAccountAccess();
+      document.querySelectorAll('.game-card').forEach((card) => card.classList.remove('active'));
+      const target = match.role === 'teacher' ? 'teacher' : 'read';
+      const targetCard = document.getElementById(target);
+      if (targetCard) targetCard.classList.add('active');
+    }
+
+    function logoutUser() {
+      state.loggedInUser = null;
+      localStorage.removeItem('missJoEALCurrentUser');
+      document.querySelectorAll('.game-card').forEach((card) => card.classList.remove('active'));
+      document.getElementById('read').classList.add('active');
+      renderAccountAccess();
+    }
+
+    function renderAccountAccess() {
+      const teacherButton = document.querySelector('[data-target="teacher"]');
+      const loginButton = document.querySelector('[data-target="login"]');
+      if (state.loggedInUser) {
+        if (teacherButton) teacherButton.style.display = state.loggedInUser.role === 'teacher' ? '' : 'none';
+        if (loginButton) loginButton.textContent = 'Profile';
+      } else {
+        if (teacherButton) teacherButton.style.display = 'none';
+        if (loginButton) loginButton.textContent = 'Login';
+      }
+    }
+
+    async function teacherAddStudent() {
+      const name = document.getElementById('teacherStudentName').value.trim();
+      const pin = document.getElementById('teacherStudentPin').value.trim();
+      const age = document.getElementById('teacherStudentAge').value;
+      if (!name || !pin) {
+        alert('Please add a student name and PIN.');
+        return;
+      }
+      const existing = state.users.find((user) => user.name.toLowerCase() === name.toLowerCase() && user.role === 'student');
+      if (existing) {
+        existing.pinHash = await hashText(pin);
+        existing.ageGroup = age;
+      } else {
+        state.users.push({ id: `student-${Date.now()}`, name, pinHash: await hashText(pin), role: 'student', ageGroup: age });
+      }
+      saveUsers();
+      renderTeacherDashboard();
+      document.getElementById('teacherStudentName').value = '';
+      document.getElementById('teacherStudentPin').value = '';
+      alert('Student saved to the class roster.');
+    }
+
+    function renderTeacherSelection() {
+      const select = document.getElementById('assignmentStudentSelect');
+      if (!select) return;
+      const students = state.users.filter((user) => user.role === 'student');
+      select.innerHTML = students.length ? students.map((student) => `<option value="${student.name}">${student.name}</option>`).join('') : '<option value="">No students yet</option>';
+    }
+
+    function saveAssignment() {
+      const student = document.getElementById('assignmentStudentSelect').value;
+      const type = document.getElementById('assignmentType').value;
+      const task = document.getElementById('assignmentTask').value.trim();
+      if (!student || !task) {
+        alert('Please choose a student and add a task title.');
+        return;
+      }
+      state.assignments.push({ student, type, task, date: new Date().toLocaleDateString() });
+      saveAssignments();
+      renderTeacherDashboard();
+      document.getElementById('assignmentTask').value = '';
+      alert('Work assigned.');
+    }
+
+    function renderTeacherDashboard() {
+      const list = document.getElementById('teacherDashboardList');
+      if (!list) return;
+      const students = state.users.filter((user) => user.role === 'student');
+      const rows = students.length ? students.map((student) => `
+        <div class="assignment-box" style="margin-top:10px;">
+          <strong>${student.name}</strong>
+          <div class="tiny-note">Age group: ${student.ageGroup || 'primary'}</div>
+          <div>${state.assignments.filter((item) => item.student === student.name).map((item) => `<div class="tiny-note">• ${item.type}: ${item.task} (${item.date})</div>`).join('') || '<div class="tiny-note">No tasks assigned yet.</div>'}</div>
+        </div>
+      `).join('') : '<p>No students in the class yet.</p>';
+      list.innerHTML = rows;
+      renderTeacherSelection();
     }
 
     function addStudent() {
@@ -1746,11 +2359,66 @@
       });
     }
 
+    function renderReadingCompBoard() {
+      const wrap = document.getElementById('readingCompBoard');
+      if (!wrap) return;
+
+      const articles = [
+        {
+          title: 'A Busy Morning',
+          text: 'Mia woke up early. She put on her school jumper and packed her lunch box. The sky was bright and the birds were singing in the trees. Mia smiled when she saw her friend Sam by the gate. They walked to school together and talked about the story they had read the night before.',
+          questions: [
+            { q: 'Why did Mia smile?', options: ['She saw her friend Sam', 'She was tired', 'She missed home'], answer: 'She saw her friend Sam' },
+            { q: 'What did Mia pack?', options: ['A lunch box', 'A toy car', 'A football'], answer: 'A lunch box' },
+            { q: 'Where were the birds?', options: ['In the trees', 'In the playground', 'In the classroom'], answer: 'In the trees' }
+          ]
+        },
+        {
+          title: 'The Rainy Day',
+          text: 'On Saturday, Noah put on his blue coat and took his umbrella to the park. It began to rain gently, so the path became shiny and dark. Noah watched the puddles grow bigger and listened to the sound of water falling on the leaves. Then the sun came out and the park looked colourful again.',
+          questions: [
+            { q: 'What did Noah carry?', options: ['An umbrella', 'A football', 'A hat'], answer: 'An umbrella' },
+            { q: 'What happened after the rain?', options: ['The sun came out', 'The park closed', 'It got darker'], answer: 'The sun came out' },
+            { q: 'How did the path look?', options: ['Shiny and dark', 'Very dusty', 'Full of snow'], answer: 'Shiny and dark' }
+          ]
+        }
+      ];
+
+      const article = articles[Math.floor(Math.random() * articles.length)];
+      wrap.innerHTML = `
+        <div class="assignment-box">
+          <h3>${article.title}</h3>
+          <p>${article.text}</p>
+          <div style="margin-top:14px;">
+            ${article.questions.map((item, index) => `
+              <div style="margin-bottom:18px;">
+                <strong>${index + 1}. ${item.q}</strong>
+                <div>
+                  ${item.options.map((option) => `<button class="rhyme-option" onclick="checkReadingAnswer(this, '${item.answer}', '${option}')">${option}</button>`).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function checkReadingAnswer(button, answer, option) {
+      const correct = option === answer;
+      button.classList.add(correct ? 'correct' : 'wrong');
+      button.textContent = `${option}${correct ? ' ✓' : ' ✗'}`;
+      if (correct) speakText(option);
+    }
+
     function bindNav() {
       document.querySelectorAll('.nav-btn').forEach((button) => {
         button.addEventListener('click', () => {
           const target = button.dataset.target;
-          if (!ageGroups[state.ageGroup].nav.includes(target)) return;
+          const isTeacher = state.loggedInUser && state.loggedInUser.role === 'teacher';
+          const allowedNormal = ageGroups[state.ageGroup].nav.includes(target);
+          const allowedTeacher = target === 'teacher' || target === 'login';
+          if (!isTeacher && target === 'teacher') return;
+          if (!allowedNormal && !allowedTeacher && target !== 'teacher' && target !== 'login') return;
           document.querySelectorAll('.game-card').forEach((card) => card.classList.remove('active'));
           document.getElementById(target).classList.add('active');
           document.querySelectorAll('.nav-btn').forEach((btn) => btn.classList.remove('active'));
@@ -1768,6 +2436,13 @@
       renderPhaseTabs();
       renderPhaseContent();
       renderBlendWords();
+      renderReadingSoundButtons();
+      renderCvcWordGrid();
+      renderPhaseBooks();
+      renderRhymeGame();
+      renderTenseCards();
+      renderStoryPrompts();
+      renderReadingCompBoard();
       renderHfwTabs();
       renderHfwMemory();
       renderVocabulary();
@@ -1775,6 +2450,9 @@
       renderMatchingBoard();
       renderStudentOverview();
       renderRewardsPanel();
+      renderTeacherDashboard();
+      renderTeacherSelection();
+      renderAccountAccess();
       if ('speechSynthesis' in window) {
         window.speechSynthesis.onvoiceschanged = () => speakText('Ready to learn');
       }
