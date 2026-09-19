@@ -27,7 +27,9 @@
     body {
       margin: 0;
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(180deg, #eef7ff 0%, var(--bg) 100%);
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.9), transparent 22%),
+        linear-gradient(180deg, #dff4ff 0%, #eaf7ff 30%, #fdfaf3 100%);
       color: var(--text);
       min-height: 100vh;
     }
@@ -147,9 +149,10 @@
 
     .game-card {
       display: none;
-      background: var(--card);
-      border-radius: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,.08);
+      background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+      border: 4px solid #dbeafe;
+      border-radius: 24px;
+      box-shadow: 0 16px 34px rgba(59,130,246,0.12);
       padding: 22px 18px;
     }
     .game-card.active { display: block; }
@@ -171,19 +174,21 @@
 
     .btn {
       border: none;
-      border-radius: 12px;
-      background: var(--primary);
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--primary) 0%, #5ea5ff 100%);
       color: white;
-      padding: 11px 16px;
+      padding: 16px 22px;
       cursor: pointer;
-      font-weight: 700;
-      font-size: 1rem;
-      transition: transform 0.15s ease;
+      font-weight: 900;
+      font-size: 1.08rem;
+      box-shadow: 0 10px 20px rgba(59,130,246,0.22);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
-    .btn:hover { transform: translateY(-1px); }
-    .btn.secondary { background: #e2e8f0; color: var(--text); }
-    .btn.success { background: var(--green); }
-    .btn.warning { background: var(--accent); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 24px rgba(59,130,246,0.25); }
+    .btn.secondary { background: linear-gradient(135deg, #f2f7ff 0%, #dfeefc 100%); color: var(--text); }
+    .btn.success { background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%); }
+    .btn.warning { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); }
+    .btn.large { padding: 18px 26px; font-size: 1.18rem; }
 
     .switch-row {
       display: flex;
@@ -248,16 +253,19 @@
       margin: 14px 0 18px;
     }
     .sound-pill {
-      border: 2px solid #dbeafe;
-      background: linear-gradient(180deg, #eef6ff 0%, #f8fbff 100%);
+      border: 3px solid #bfd7ff;
+      background: linear-gradient(180deg, #ebf5ff 0%, #ffffff 100%);
       color: var(--text);
       border-radius: 999px;
-      padding: 8px 12px;
-      font-weight: 800;
+      padding: 10px 16px;
+      font-weight: 900;
+      font-size: 1.1rem;
       cursor: pointer;
+      box-shadow: 0 8px 16px rgba(59,130,246,0.1);
     }
     .sound-pill:hover {
-      background: #dbeafe;
+      background: #dfeeff;
+      transform: translateY(-1px);
     }
     .book-grid,
     .story-grid,
@@ -311,12 +319,14 @@
       width: 100%;
       text-align: left;
       border: 2px solid #dbeaf7;
-      background: #f8fafc;
-      border-radius: 12px;
-      padding: 10px 12px;
+      background: linear-gradient(180deg, #ffffff 0%, #f3f9ff 100%);
+      border-radius: 14px;
+      padding: 12px 14px;
       margin-top: 8px;
-      font-weight: 700;
+      font-weight: 800;
+      font-size: 1rem;
       cursor: pointer;
+      box-shadow: 0 6px 12px rgba(59,130,246,0.05);
     }
     .rhyme-option.correct { background: #dcfce7; border-color: #22c55e; }
     .rhyme-option.wrong { background: #fee2e2; border-color: #ef4444; }
@@ -338,10 +348,10 @@
     }
 
     .scene-box {
-      background: linear-gradient(180deg, #eff8ff 0%, #fef3c7 100%);
-      border: 2px dashed #afd2ff;
-      border-radius: 18px;
-      padding: 14px;
+      background: linear-gradient(180deg, #effaff 0%, #fff7d6 100%);
+      border: 4px dashed #afd2ff;
+      border-radius: 22px;
+      padding: 18px;
       text-align: center;
     }
     .scene-svg {
@@ -349,24 +359,30 @@
       max-width: 420px;
       height: auto;
       display: block;
-      margin: 0 auto 10px;
-      border-radius: 12px;
+      margin: 0 auto 12px;
+      border-radius: 18px;
       background: #f8fbff;
+      box-shadow: inset 0 0 0 3px rgba(59,130,246,0.08);
     }
     .swatches {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 8px;
-      margin-top: 4px;
+      gap: 10px;
+      margin-top: 6px;
     }
     .swatch {
-      width: 38px;
-      height: 38px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
-      border: 3px solid white;
-      box-shadow: 0 0 0 2px rgba(0,0,0,.1);
+      border: 4px solid white;
+      box-shadow: 0 0 0 2px rgba(0,0,0,.08);
       cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .swatch:hover, .swatch.active {
+      transform: scale(1.08);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.28), 0 8px 18px rgba(59,130,246,0.18);
     }
 
     .prompt-box {
@@ -404,6 +420,26 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 16px;
       margin-top: 12px;
+    }
+    .game-arcade-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 16px;
+    }
+    .mini-game-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 2px solid #dfeaf8;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 12px 22px rgba(59,130,246,0.06);
+    }
+    .mini-game-board {
+      margin-top: 12px;
+    }
+    .mini-game-card h3 {
+      color: var(--primary);
+      margin-bottom: 10px;
     }
     .match-col {
       background: #f8fafc;
@@ -505,15 +541,89 @@
       margin-top: 20px;
     }
     .word-card {
-      padding: 18px 12px;
+      padding: 22px 16px;
       text-align: center;
-      border-radius: 16px;
-      border: 2px solid #daeafe;
-      background: linear-gradient(180deg, #f8fbff, #eef6ff);
+      border-radius: 22px;
+      border: 4px solid #cfe2ff;
+      background: linear-gradient(180deg, #ffffff 0%, #edf6ff 100%);
       cursor: pointer;
-      font-weight: 800;
+      font-weight: 900;
+      box-shadow: 0 12px 20px rgba(59,130,246,0.12);
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.3rem;
     }
-    .word-card .emoji { display: block; font-size: 2.2rem; margin-bottom: 8px; }
+    .word-card:hover {
+      transform: translateY(-3px) scale(1.01);
+      border-color: #8ec5ff;
+      box-shadow: 0 16px 26px rgba(59,130,246,0.16);
+    }
+    .word-card .emoji { display: block; font-size: 3rem; margin-bottom: 10px; }
+    .drag-tile {
+      border-radius: 20px;
+      border: 4px solid #bfe0ff;
+      background: linear-gradient(180deg, #fffef8 0%, #eaf5ff 100%);
+      padding: 16px 18px;
+      font-size: 1.5rem;
+      font-weight: 900;
+      cursor: grab;
+      text-align: center;
+      box-shadow: 0 12px 18px rgba(59,130,246,0.12);
+    }
+    .drag-tile:active { cursor: grabbing; }
+    .drop-zone {
+      min-height: 100px;
+      border: 4px dashed #9ac1ff;
+      border-radius: 22px;
+      background: linear-gradient(180deg, #f6fbff 0%, #fffdf3 100%);
+      display: grid;
+      place-items: center;
+      margin-top: 12px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--muted);
+      text-align: center;
+      padding: 18px;
+    }
+    .drop-zone.dragover {
+      border-color: var(--green);
+      background: #ebfff0;
+      color: #166534;
+    }
+    .celebration {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #166534;
+      border: 2px solid #86efac;
+      padding: 8px 14px;
+      font-weight: 900;
+    }
+    .try-again {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      background: #fee2e2;
+      color: #991b1b;
+      border: 2px solid #fca5a5;
+      padding: 8px 14px;
+      font-weight: 900;
+    }
+    .classroom-banner {
+      background: linear-gradient(135deg, #fff7d6 0%, #dff7ff 100%);
+      border: 3px solid #f9d977;
+      border-radius: 18px;
+      padding: 12px 16px;
+      font-weight: 900;
+      color: #7c4500;
+      margin-bottom: 12px;
+    }
 
     .trace-box {
       background: #f8fafc;
@@ -690,6 +800,7 @@
     <button class="nav-btn" data-target="story">Story</button>
     <button class="nav-btn" data-target="readingcomp">Comprehension</button>
     <button class="nav-btn" data-target="matching">Matching</button>
+    <button class="nav-btn" data-target="games">Games</button>
     <button class="nav-btn" data-target="accounts">Accounts</button>
     <button class="nav-btn" data-target="login">Login</button>
     <button class="nav-btn" data-target="teacher">Teacher</button>
@@ -764,12 +875,15 @@
         <div id="blendFeedback" class="feedback" aria-live="polite"></div>
       </div>
       <div id="cvcWordGrid" class="word-grid" style="margin-top:18px;"></div>
+      <div id="cvcChoiceGame" class="word-grid" style="margin-top:18px;"></div>
     </section>
 
     <section id="books" class="game-card">
-      <h2>Phase 2 Reading Books</h2>
+      <h2>Phonics Reading Books</h2>
       <p>Short decodable books with simple images and familiar sounds to support early readers.</p>
       <div id="phaseBooks" class="book-grid"></div>
+      <h3 style="margin-top:24px;">Short stories with pictures and words</h3>
+      <div id="shortStoryCards" class="book-grid"></div>
     </section>
 
     <section id="readingcomp" class="game-card">
@@ -788,7 +902,8 @@
 
     <section id="vocabulary" class="game-card">
       <h2>Vocabulary</h2>
-      <p>Listen to the word, look at the picture and match it to the correct classroom object.</p>
+      <p>Listen to the word, look at the picture and click the correct item.</p>
+      <div class="switch-row" id="vocabTabs"></div>
       <div id="vocabGrid" class="word-grid"></div>
     </section>
 
@@ -802,6 +917,8 @@
       <h2>Grammar: Tenses</h2>
       <p>Practise the difference between past, present and future using simple sentences.</p>
       <div id="tenseCards" class="tense-grid"></div>
+      <h3 style="margin-top:24px;">Irregular Verbs</h3>
+      <div id="irregularVerbGame" class="tense-grid"></div>
     </section>
 
     <section id="story" class="game-card">
@@ -814,6 +931,13 @@
       <h2>Matching Games</h2>
       <div class="switch-row" id="matchTabs"></div>
       <div id="matchingBoard" class="match-grid"></div>
+    </section>
+
+    <section id="games" class="game-card">
+      <h2>Games Arcade</h2>
+      <p>Play quick literacy games that follow the same idea as the best reading platforms: short prompts, clear choices, and a steady build from easier to harder tasks.</p>
+      <div class="switch-row" id="gameTabs"></div>
+      <div id="gameChallengeBoard" class="mini-game-board"></div>
     </section>
 
     <section id="accounts" class="game-card">
@@ -969,6 +1093,19 @@
       ph: 'ph', wh: 'wh', kn: 'kn', gn: 'gn', wr: 'wr'
     };
 
+    const pureJollyPhonemeMap = {
+      s: 's s s', a: 'a a a', t: 't t t', p: 'p p p', i: 'i i i', n: 'n n n',
+      m: 'm m m', d: 'd d d', g: 'g g g', o: 'o o o', c: 'c c c', k: 'k k k',
+      ck: 'k k k', e: 'e e e', u: 'u u u', r: 'r r r', h: 'h h h', b: 'b b b',
+      ff: 'f f f', ll: 'l l l', ss: 's s s', zz: 'z z z', qu: 'qu qu qu',
+      ch: 'ch ch ch', sh: 'sh sh sh', th: 'th th th', ng: 'ng ng ng', ai: 'ai ai ai', ee: 'ee ee ee',
+      bl: 'bl bl bl', st: 'st st st', tr: 'tr tr tr', cl: 'cl cl cl', mp: 'mp mp mp', nd: 'nd nd nd',
+      ay: 'ay ay ay', igh: 'igh igh igh', oa: 'oa oa oa', oo: 'oo oo oo', ow: 'ow ow ow', ie: 'ie ie ie',
+      or: 'or or or', air: 'air air air', ar: 'ar ar ar', er: 'er er er', ur: 'ur ur ur', oi: 'oi oi oi',
+      ue: 'ue ue ue', aw: 'aw aw aw', ea: 'ea ea ea', ir: 'ir ir ir', oy: 'oy oy oy',
+      ph: 'f f f', wh: 'wh wh wh', kn: 'n n n', gn: 'n n n', wr: 'r r r'
+    };
+
     const jollySoundTips = {
       s: 'Say the sound as /s/ gently, like a snake making the sss sound.',
       a: 'Say the sound as /a/ like the vowel in “apple”.',
@@ -1032,7 +1169,7 @@
     const readTasks = {
       monster: [
         { type: 'monster', prompt: 'The monster is blue with orange arms and green legs.', palette: { body: 'blue', arms: 'orange', legs: 'green' }, target: 'monster' },
-        { type: 'monster', prompt: 'The monster has pink arms and a red mouth.', palette: { body: 'white', arms: 'pink', legs: 'red' }, target: 'monster' },
+        { type: 'monster', prompt: 'The monster has a white body, pink arms and a red mouth.', palette: { body: 'white', arms: 'pink', mouth: 'red' }, target: 'monster' },
         { type: 'monster', prompt: 'The monster is purple with orange arms and green legs.', palette: { body: 'purple', arms: 'orange', legs: 'green' }, target: 'monster' }
       ],
       animals: [
@@ -1060,15 +1197,15 @@
     const ageGroups = {
       early: {
         label: '3–5',
-        nav: ['read', 'phonics', 'reading', 'accounts', 'ai']
+        nav: ['read', 'phonics', 'reading', 'books', 'games', 'accounts', 'ai']
       },
       primary: {
         label: '5–7',
-        nav: ['phonics', 'reading', 'hfw', 'accounts', 'ai']
+        nav: ['phonics', 'reading', 'books', 'games', 'hfw', 'accounts', 'ai']
       },
       upper: {
         label: '7–11',
-        nav: ['reading', 'hfw', 'vocabulary', 'matching', 'accounts', 'ai']
+        nav: ['phonics', 'reading', 'books', 'readingcomp', 'story', 'games', 'hfw', 'vocabulary', 'matching', 'accounts', 'ai']
       }
     };
 
@@ -1078,7 +1215,12 @@
       phase: 'phase2a',
       hfwPhase: 'phase2a',
       matchPhase: 'classroom',
+      gameTab: 'pictureSelection',
+      vocabGroup: 'classroom',
       currentSoundIndex: 0,
+      readingChallengeIndex: 0,
+      challengeStreak: 0,
+      comprehensionIndex: 0,
       students: loadStudents(),
       selectedStudent: null,
       rewards: loadRewards(),
@@ -1323,12 +1465,31 @@
       updateReadPrompt();
     }
 
+    function getTargetPartIds(target) {
+      const aliases = {
+        body: ['body'],
+        arms: ['arms', 'arms2'],
+        legs: ['legs', 'legs2'],
+        mouth: ['mouth'],
+        tail: ['tail'],
+        ear: ['ear', 'ear2'],
+        paws: ['paws', 'paws2'],
+        bed: ['bed'],
+        bath: ['bath'],
+        table: ['table']
+      };
+      return aliases[target] || [target];
+    }
+
     function checkColourMatch() {
       const expected = readTasks[readLevel][readIndex % readTasks[readLevel].length].palette;
       const feedback = document.getElementById('readFeedback');
       const allMatch = Object.entries(expected).every(([key, colour]) => {
-        const fill = document.getElementById(`part-${key}`)?.getAttribute('fill');
-        return fill && colourToHex(fill).toLowerCase() === colourToHex(colour).toLowerCase();
+        const ids = getTargetPartIds(key);
+        return ids.some((id) => {
+          const fill = document.getElementById(`part-${id}`)?.getAttribute('fill');
+          return fill && colourToHex(fill).toLowerCase() === colourToHex(colour).toLowerCase();
+        });
       });
 
       if (allMatch) {
@@ -1361,6 +1522,16 @@
 
     let selectedColourPart = null;
 
+    function paintColourTarget(target, colourHex) {
+      const ids = getTargetPartIds(target);
+      ids.forEach((id) => {
+        const part = document.getElementById(`part-${id}`);
+        if (part) {
+          part.setAttribute('fill', colourHex);
+        }
+      });
+    }
+
     function drawReadScene(task) {
       const svg = document.getElementById('sceneSvg');
       const swatches = document.getElementById('colourSwatches');
@@ -1372,13 +1543,12 @@
 
       swatches.querySelectorAll('.swatch').forEach((button) => {
         button.addEventListener('click', () => {
+          document.querySelectorAll('.swatch').forEach((swatch) => swatch.classList.remove('active'));
+          button.classList.add('active');
           const selectedColour = button.dataset.colour;
-          const target = selectedColourPart || getColourTarget(task);
+          const target = selectedColourPart || getColourTarget(task, selectedColour);
           if (target) {
-            const part = document.getElementById(`part-${target}`);
-            if (part) {
-              part.setAttribute('fill', colourToHex(selectedColour));
-            }
+            paintColourTarget(target, colourToHex(selectedColour));
           }
         });
       });
@@ -1388,6 +1558,10 @@
         part.addEventListener('click', () => {
           const targetName = part.id.replace('part-', '');
           selectedColourPart = targetName;
+          const activeButton = document.querySelector('.swatch.active');
+          if (activeButton) {
+            activeButton.classList.remove('active');
+          }
         });
       });
 
@@ -1400,9 +1574,9 @@
           <rect id="part-arms2" x="270" y="110" width="90" height="18" rx="10" fill="none" stroke="#2b3a4a" stroke-width="4" transform="rotate(30 270 110)"/>
           <rect id="part-legs" x="160" y="200" width="26" height="36" rx="12" fill="none" stroke="#2b3a4a" stroke-width="4"/>
           <rect id="part-legs2" x="235" y="200" width="26" height="36" rx="12" fill="none" stroke="#2b3a4a" stroke-width="4"/>
+          <path id="part-mouth" d="M155 150 Q210 175 265 150" fill="none" stroke="#2b3a4a" stroke-width="5" stroke-linecap="round"/>
           <circle cx="165" cy="120" r="16" fill="white" stroke="#1f2937" stroke-width="4"/>
           <circle cx="255" cy="120" r="16" fill="white" stroke="#1f2937" stroke-width="4"/>
-          <path d="M155 148 Q210 172 265 148" fill="none" stroke="#1f2937" stroke-width="5" stroke-linecap="round"/>
           <circle cx="210" cy="125" r="10" fill="none" stroke="#1f2937" stroke-width="4"/>
         `;
       } else if (task.target === 'dog') {
@@ -1469,14 +1643,30 @@
       }
     }
 
-    function getColourTarget(task) {
+    function getColourTarget(task, selectedColour = null) {
       const prompt = task.prompt.toLowerCase();
+      if (selectedColour) {
+        const targetMap = {
+          body: ['blue', 'pink', 'purple', 'white', 'black', 'brown'],
+          arms: ['orange'],
+          legs: ['green'],
+          mouth: ['red'],
+          tail: ['orange'],
+          ear: ['brown'],
+          paws: ['white', 'black']
+        };
+        for (const [target, colours] of Object.entries(targetMap)) {
+          if (colours.includes(selectedColour.toLowerCase())) return target;
+        }
+      }
       if (task.target === 'monster') {
+        if (prompt.includes('mouth')) return 'mouth';
         if (prompt.includes('blue')) return 'body';
         if (prompt.includes('orange')) return 'arms';
         if (prompt.includes('green')) return 'legs';
-        if (prompt.includes('pink')) return 'body';
+        if (prompt.includes('pink')) return 'arms';
         if (prompt.includes('purple')) return 'body';
+        if (prompt.includes('white')) return 'body';
       }
       if (task.target === 'dog') {
         if (prompt.includes('brown')) return 'body';
@@ -1622,15 +1812,25 @@
                 <span class="sound-step ${soundState.read ? 'done' : ''}">Say</span>
               </div>
               <div class="button-row">
-                <button class="btn ${soundState.say ? 'success' : 'secondary'}" onclick="markSoundSkillComplete('${state.phase}', '${sound}', 'say')">Listen and say</button>
-                <button class="btn ${soundState.trace ? 'success' : 'secondary'}" onclick="bindSoundTraceCanvas('${sound}')">Trace it</button>
-                <button class="btn ${soundState.write ? 'success' : 'secondary'}" onclick="bindSoundTraceCanvas('${sound}')">Write it</button>
-                <button class="btn ${soundState.read ? 'success' : 'secondary'}" onclick="markSoundSkillComplete('${state.phase}', '${sound}', 'read')">Read it</button>
+                <button class="btn large ${soundState.say ? 'success' : 'secondary'}" onclick="markSoundSkillComplete('${state.phase}', '${sound}', 'say')">🔊 Listen and say</button>
+                <button class="btn large ${soundState.trace ? 'success' : 'secondary'}" onclick="bindSoundTraceCanvas('${sound}')">✏️ Trace it</button>
+                <button class="btn large ${soundState.write ? 'success' : 'secondary'}" onclick="bindSoundTraceCanvas('${sound}')">📝 Write it</button>
+                <button class="btn large ${soundState.read ? 'success' : 'secondary'}" onclick="markSoundSkillComplete('${state.phase}', '${sound}', 'read')">📖 Read it</button>
               </div>
-              <canvas id="soundTraceCanvas" width="320" height="180" style="border:2px dashed #c7d2fe; border-radius:16px; width:100%; max-width:340px; background:#f8fbff; margin-top:12px; touch-action:none;"></canvas>
-              <div class="button-row">
-                <button class="btn" onclick="bindSoundTraceCanvas('${sound}')">Start tracing</button>
-                <button class="btn secondary" onclick="drawTraceGuide(document.getElementById('soundTraceCanvas'), '${sound}')">Clear</button>
+              <div class="trace-box">
+                <canvas id="soundTraceCanvas" width="320" height="180" style="border:2px dashed #c7d2fe; border-radius:16px; width:100%; max-width:340px; background:#f8fbff; margin-top:12px; touch-action:none;"></canvas>
+                <div class="button-row" style="justify-content:center;">
+                  <button class="btn success" onclick="bindSoundTraceCanvas('${sound}')">Start tracing</button>
+                  <button class="btn secondary" onclick="drawTraceGuide(document.getElementById('soundTraceCanvas'), '${sound}')">Clear</button>
+                </div>
+              </div>
+              <div class="prompt-box" style="margin-top:16px;">
+                <h4 style="margin:0 0 8px;">Write the sound</h4>
+                <input id="soundWriteInput" type="text" maxlength="2" placeholder="Type the sound here..." value="${soundState.write ? sound : ''}" />
+                <div class="button-row">
+                  <button class="btn success" onclick="checkSoundWriting('${sound}')">Check sound</button>
+                </div>
+                <div id="soundWritingFeedback" class="feedback" aria-live="polite"></div>
               </div>
               <div class="button-row">
                 <button class="btn success" ${soundState.say && soundState.trace && soundState.write && soundState.read ? '' : 'disabled'} onclick="advanceToNextSound()">Next sound</button>
@@ -1650,6 +1850,22 @@
 
       const canvas = document.getElementById('soundTraceCanvas');
       if (canvas) bindSoundTraceCanvas(currentSound);
+    }
+
+    function checkSoundWriting(correctSound) {
+      const input = document.getElementById('soundWriteInput');
+      const feedback = document.getElementById('soundWritingFeedback');
+      if (!input || !feedback) return;
+      const typed = (input.value || '').trim().toLowerCase();
+      const answer = String(correctSound).trim().toLowerCase();
+      if (typed === answer) {
+        feedback.innerHTML = '<span class="celebration">✅ Well done! You wrote the sound correctly.</span>';
+        markSoundSkillComplete(state.phase, correctSound, 'write');
+        speakText('Well done!');
+      } else {
+        feedback.innerHTML = '<span class="try-again">🔄 Try again. Say the sound and write it carefully.</span>';
+        speakText('Try again');
+      }
     }
 
     function advanceToNextSound() {
@@ -1763,13 +1979,21 @@
 
     const cvcWordBank = [
       { word: 'sat', image: '🐱', sound: 'sat' },
-      { word: 'pan', image: '🥐', sound: 'pan' },
+      { word: 'pan', image: '🍳', sound: 'pan' },
       { word: 'dog', image: '🐶', sound: 'dog' },
       { word: 'hat', image: '🎩', sound: 'hat' },
       { word: 'sun', image: '☀️', sound: 'sun' },
       { word: 'bin', image: '🗑️', sound: 'bin' },
       { word: 'ship', image: '🚢', sound: 'ship' },
       { word: 'rain', image: '🌧️', sound: 'rain' }
+    ];
+
+    const cvcChoiceGame = [
+      { image: '🐱', word: 'sat', options: ['sat', 'pan', 'sun'], sound: 'sat' },
+      { image: '🍳', word: 'pan', options: ['hat', 'pan', 'dog'], sound: 'pan' },
+      { image: '🐶', word: 'dog', options: ['dog', 'bin', 'rain'], sound: 'dog' },
+      { image: '🎩', word: 'hat', options: ['hat', 'sun', 'sat'], sound: 'hat' },
+      { image: '☀️', word: 'sun', options: ['bin', 'sun', 'ship'], sound: 'sun' }
     ];
 
     const phaseBooks = [
@@ -1821,6 +2045,14 @@
       { tense: 'Past', example: 'I played outside yesterday.', clue: 'It already happened.', accent: '#c084fc' },
       { tense: 'Present', example: 'I play outside today.', clue: 'It is happening now.', accent: '#38bdf8' },
       { tense: 'Future', example: 'I will play outside tomorrow.', clue: 'It will happen later.', accent: '#34d399' }
+    ];
+
+    const irregularVerbGame = [
+      { prompt: 'go', clue: 'Choose the past tense.', options: ['went', 'goed', 'goned'], answer: 'went', accent: '#f59e0b' },
+      { prompt: 'eat', clue: 'Choose the past tense.', options: ['ate', 'eated', 'eat'], answer: 'ate', accent: '#22c55e' },
+      { prompt: 'see', clue: 'Choose the past tense.', options: ['saw', 'seed', 'seen'], answer: 'saw', accent: '#60a5fa' },
+      { prompt: 'run', clue: 'Choose the past tense.', options: ['ran', 'runned', 'runed'], answer: 'ran', accent: '#c084fc' },
+      { prompt: 'make', clue: 'Choose the past tense.', options: ['made', 'maked', 'maden'], answer: 'made', accent: '#f472b6' }
     ];
 
     const storyPrompts = [
@@ -1876,6 +2108,14 @@
         { word: 'run', emoji: '🏃', sound: 'run' },
         { word: 'jump', emoji: '🤾', sound: 'jump' },
         { word: 'dance', emoji: '💃', sound: 'dance' }
+      ],
+      colours: [
+        { word: 'red', emoji: '🟥', sound: 'red' },
+        { word: 'blue', emoji: '🟦', sound: 'blue' },
+        { word: 'yellow', emoji: '🟨', sound: 'yellow' },
+        { word: 'green', emoji: '🟩', sound: 'green' },
+        { word: 'purple', emoji: '🟪', sound: 'purple' },
+        { word: 'orange', emoji: '🟧', sound: 'orange' }
       ]
     };
 
@@ -1897,6 +2137,81 @@
           <span>${item.word}</span>
         </button>
       `).join('');
+    }
+
+    function renderCvcChoiceGame() {
+      const wrap = document.getElementById('cvcChoiceGame');
+      if (!wrap) return;
+      wrap.innerHTML = `
+        <div class="classroom-banner">✨ Match the picture to the word!</div>
+        ${cvcChoiceGame.map((item) => `
+          <article class="rhyme-card" style="padding:18px;">
+            <div class="rhyme-image" style="background: linear-gradient(135deg, #fbbf24, #f472b6);">${item.image}</div>
+            <p style="margin-bottom:10px; font-weight:800;">Listen and choose the matching word</p>
+            <div class="button-row" style="margin-top:8px;">
+              <button class="btn large secondary" onclick="speakText('${item.sound}')">🔊 Listen</button>
+            </div>
+            <div class="drop-zone" data-cvc-drop="${item.word}">Drag the correct word here</div>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap:10px; margin-top:12px;">
+              ${item.options.map((option) => `
+                <div class="drag-tile" draggable="true" data-cvc-word="${option}" data-cvc-answer="${item.word}">${option}</div>
+              `).join('')}
+            </div>
+          </article>
+        `).join('')}
+      `;
+
+      document.querySelectorAll('.drag-tile').forEach((tile) => {
+        tile.addEventListener('dragstart', (event) => {
+          event.dataTransfer.setData('text/plain', tile.dataset.cvcWord);
+          event.dataTransfer.setData('text/answer', tile.dataset.cvcAnswer);
+        });
+      });
+
+      document.querySelectorAll('.drop-zone').forEach((zone) => {
+        zone.addEventListener('dragover', (event) => {
+          event.preventDefault();
+          zone.classList.add('dragover');
+        });
+        zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+        zone.addEventListener('drop', (event) => {
+          event.preventDefault();
+          const droppedValue = event.dataTransfer.getData('text/plain');
+          const answer = event.dataTransfer.getData('text/answer');
+          const isCorrect = droppedValue === zone.dataset.cvcDrop;
+          zone.classList.remove('dragover');
+          zone.textContent = isCorrect ? `✅ ${droppedValue}` : `Try again: ${droppedValue}`;
+          if (isCorrect) {
+            zone.style.borderColor = '#22c55e';
+            zone.style.background = '#ebfff0';
+            zone.style.color = '#166534';
+            awardReward('phonics', 'CVC winner', '⭐');
+            speakText('Well done!');
+            speakText(droppedValue);
+          } else {
+            zone.style.borderColor = '#ef4444';
+            zone.style.background = '#fff1f2';
+            zone.style.color = '#991b1b';
+            speakText('Try again');
+          }
+          if (answer === zone.dataset.cvcDrop) {
+            zone.textContent = `✅ ${answer}`;
+          }
+        });
+      });
+    }
+
+    function checkCvcChoice(button, answer, option) {
+      const isCorrect = option === answer;
+      button.classList.add(isCorrect ? 'correct' : 'wrong');
+      button.textContent = `${option}${isCorrect ? ' ✓' : ' ✗'}`;
+      if (isCorrect) {
+        awardReward('phonics', 'CVC winner', '⭐');
+        speakText('Well done!');
+        speakText(option);
+      } else {
+        speakText('Try again');
+      }
     }
 
     function renderPhaseBooks() {
@@ -1950,6 +2265,31 @@
       `).join('');
     }
 
+    function renderIrregularVerbGame() {
+      const wrap = document.getElementById('irregularVerbGame');
+      if (!wrap) return;
+      wrap.innerHTML = irregularVerbGame.map((card) => `
+        <article class="tense-card">
+          <div class="book-image" style="background: linear-gradient(135deg, ${card.accent}, #1d4ed8);">${card.prompt}</div>
+          <h3>${card.prompt}</h3>
+          <p>${card.clue}</p>
+          ${card.options.map((option) => `
+            <button class="rhyme-option" onclick="checkIrregularVerbChoice(this, '${card.answer}', '${option}')">${option}</button>
+          `).join('')}
+        </article>
+      `).join('');
+    }
+
+    function checkIrregularVerbChoice(button, answer, option) {
+      const isCorrect = option === answer;
+      button.classList.add(isCorrect ? 'correct' : 'wrong');
+      button.textContent = `${option}${isCorrect ? ' ✓' : ' ✗'}`;
+      if (isCorrect) {
+        awardReward('grammar', 'Irregular verb winner', '🏆');
+        speakText(option);
+      }
+    }
+
     function renderStoryPrompts() {
       const wrap = document.getElementById('storyPromptGrid');
       if (!wrap) return;
@@ -1963,12 +2303,32 @@
       `).join('');
     }
 
+    function renderVocabularyTabs() {
+      const tabs = document.getElementById('vocabTabs');
+      if (!tabs) return;
+      const groups = Object.keys(vocabulary);
+      tabs.innerHTML = groups.map((group) => `
+        <button class="switch-btn ${group === state.vocabGroup ? 'active' : ''}" data-vocab-group="${group}">${group}</button>
+      `).join('');
+
+      document.querySelectorAll('[data-vocab-group]').forEach((button) => {
+        button.addEventListener('click', () => {
+          state.vocabGroup = button.dataset.vocabGroup;
+          renderVocabularyTabs();
+          renderVocabulary();
+        });
+      });
+    }
+
     function renderVocabulary() {
-      const items = vocabulary.classroom;
-      document.getElementById('vocabGrid').innerHTML = items.map((item) => `
-        <div class="word-card" onclick="speakText('${item.sound}')">
-          <span class="emoji">${item.emoji}</span>
+      const items = vocabulary[state.vocabGroup] || vocabulary.classroom;
+      const grid = document.getElementById('vocabGrid');
+      if (!grid) return;
+      grid.innerHTML = items.map((item) => `
+        <div class="word-card" style="display:flex; flex-direction:column; gap:8px; align-items:center; justify-content:center;">
+          <span class="emoji" style="font-size:2rem;">${item.emoji}</span>
           <span>${item.word}</span>
+          <button class="btn secondary" type="button" onclick="event.stopPropagation(); speakText('${item.sound}')">🔊 Listen</button>
         </div>
       `).join('');
     }
@@ -2027,6 +2387,333 @@
         <div class="match-col"><h3>Picture</h3>${left}</div>
         <div class="match-col"><h3>Word</h3>${right}</div>
       `;
+    }
+
+    const phonicsMatchSets = {
+      early: [
+        { sound: 's', icon: '🐍', word: 'snake' },
+        { sound: 'a', icon: '🍎', word: 'apple' },
+        { sound: 't', icon: '🧸', word: 'teddy' },
+        { sound: 'p', icon: '🐼', word: 'panda' }
+      ],
+      primary: [
+        { sound: 'sh', icon: '🦊', word: 'ship' },
+        { sound: 'ch', icon: '🐱', word: 'chair' },
+        { sound: 'th', icon: '🧣', word: 'thumb' },
+        { sound: 'ck', icon: '🧦', word: 'sock' }
+      ],
+      upper: [
+        { sound: 'igh', icon: '🌙', word: 'night' },
+        { sound: 'oa', icon: '🛶', word: 'boat' },
+        { sound: 'ee', icon: '🌼', word: 'tree' },
+        { sound: 'ow', icon: '🐮', word: 'cow' }
+      ]
+    };
+
+    const treasureHuntSets = {
+      early: [
+        { clue: 'Find the treasure with the /s/ sound.', answer: '🐍', options: ['🐍', '🦕', '🍉', '☀️'], sound: 's' },
+        { clue: 'Find the treasure with the /a/ sound.', answer: '🍎', options: ['🌳', '🍎', '🚗', '🧁'], sound: 'a' },
+        { clue: 'Find the treasure with the /t/ sound.', answer: '🧸', options: ['🧸', '🪁', '🌈', '🐟'], sound: 't' }
+      ],
+      primary: [
+        { clue: 'Find the treasure with the /sh/ sound.', answer: '🦊', options: ['🦊', '🎲', '🚀', '🌧️'], sound: 'sh' },
+        { clue: 'Find the treasure with the /ch/ sound.', answer: '🐱', options: ['📚', '🐱', '🌻', '🧩'], sound: 'ch' },
+        { clue: 'Find the treasure with the /ck/ sound.', answer: '🧦', options: ['🧦', '🪴', '🍊', '🎈'], sound: 'ck' }
+      ],
+      upper: [
+        { clue: 'Find the treasure with the /igh/ sound.', answer: '🌙', options: ['🌙', '🧺', '🌊', '📌'], sound: 'igh' },
+        { clue: 'Find the treasure with the /oa/ sound.', answer: '🛶', options: ['🛶', '🧪', '📼', '⚽'], sound: 'oa' },
+        { clue: 'Find the treasure with the /ow/ sound.', answer: '🐮', options: ['🐮', '🧭', '🎀', '🧤'], sound: 'ow' }
+      ]
+    };
+
+    const pictureSelectionSets = {
+      early: [
+        { prompt: 'Choose the picture for the sound s.', answer: 'snake', options: ['snake', 'ship', 'sun', 'tree'] },
+        { prompt: 'Choose the picture for the sound a.', answer: 'apple', options: ['apple', 'ball', 'bird', 'boat'] },
+        { prompt: 'Choose the picture for the sound t.', answer: 'teddy', options: ['teddy', 'train', 'tree', 'tiger'] }
+      ],
+      primary: [
+        { prompt: 'Choose the picture for the word ship.', answer: 'ship', options: ['ship', 'shop', 'cat', 'sun'] },
+        { prompt: 'Choose the picture for the word chair.', answer: 'chair', options: ['chair', 'chalk', 'chick', 'chef'] },
+        { prompt: 'Choose the picture for the word sock.', answer: 'sock', options: ['sock', 'sun', 'ship', 'soup'] }
+      ],
+      upper: [
+        { prompt: 'Choose the picture for the word night.', answer: 'night', options: ['night', 'kite', 'boat', 'tree'] },
+        { prompt: 'Choose the picture for the word boat.', answer: 'boat', options: ['boat', 'book', 'ball', 'bowl'] },
+        { prompt: 'Choose the picture for the word cow.', answer: 'cow', options: ['cow', 'cat', 'cap', 'cloud'] }
+      ]
+    };
+
+    const readingChallengeSets = {
+      early: [
+        { prompt: 'The cat is on the mat.', question: 'Where is the cat?', options: ['on the mat', 'in the box', 'under the bed'], answer: 'on the mat' },
+        { prompt: 'I can see a big red ball.', question: 'What colour is the ball?', options: ['red', 'blue', 'green'], answer: 'red' },
+        { prompt: 'Sam has a pet dog.', question: 'Who has a pet dog?', options: ['Sam', 'Mia', 'The cat'], answer: 'Sam' },
+        { prompt: 'The bird sat on the tree.', question: 'Where was the bird?', options: ['on the tree', 'in the car', 'under the table'], answer: 'on the tree' },
+        { prompt: 'We saw a sun in the sky.', question: 'What did we see?', options: ['the sun', 'a boat', 'a book'], answer: 'the sun' }
+      ],
+      primary: [
+        { prompt: 'The ship sailed past the tree.', question: 'What sailed past the tree?', options: ['the ship', 'the dog', 'the kite'], answer: 'the ship' },
+        { prompt: 'I put my book on the shelf.', question: 'Where was the book?', options: ['on the shelf', 'in the bin', 'by the door'], answer: 'on the shelf' },
+        { prompt: 'The chick ran to the pond.', question: 'Where did the chick run?', options: ['to the pond', 'to the shop', 'to school'], answer: 'to the pond' },
+        { prompt: 'A rabbit hid under the chair.', question: 'Where was the rabbit?', options: ['under the chair', 'in the bag', 'on the roof'], answer: 'under the chair' },
+        { prompt: 'The teacher read a story to the class.', question: 'Who read the story?', options: ['the teacher', 'the cat', 'the bus'], answer: 'the teacher' }
+      ],
+      upper: [
+        { prompt: 'At sunrise, the children walked to the park with their teacher.', question: 'Who walked to the park?', options: ['the children and teacher', 'the birds', 'the buses'], answer: 'the children and teacher' },
+        { prompt: 'The explorer packed a lantern before the long journey.', question: 'What did the explorer pack?', options: ['a lantern', 'a football', 'a toy train'], answer: 'a lantern' },
+        { prompt: 'We carried our books carefully across the bridge.', question: 'What did we carry?', options: ['books', 'flowers', 'socks'], answer: 'books' },
+        { prompt: 'The storm finished by sunset, and the path was quiet again.', question: 'What happened when the storm finished?', options: ['the path was quiet again', 'the sky turned red', 'the children ran home'], answer: 'the path was quiet again' },
+        { prompt: 'Before the match began, the team checked their boots and listened to the coach.', question: 'What did the team check?', options: ['their boots', 'the bus tickets', 'a comic book'], answer: 'their boots' }
+      ]
+    };
+
+    function getProgressiveReadingChallengePool() {
+      const currentSet = readingChallengeSets[state.ageGroup] || readingChallengeSets.early;
+      const nextSet = state.ageGroup === 'early' ? readingChallengeSets.primary : state.ageGroup === 'primary' ? readingChallengeSets.upper : [];
+      return [...currentSet, ...(nextSet || [])];
+    }
+
+    function renderGameTabs() {
+      const tabs = document.getElementById('gameTabs');
+      if (!tabs) return;
+      const labels = {
+        phonicsMatch: 'Matching phonics',
+        treasureHunt: 'Treasure hunt',
+        pictureSelection: 'Picture selection',
+        miniReading: 'Mini reading'
+      };
+      tabs.innerHTML = Object.entries(labels).map(([key, label]) => `
+        <button class="switch-btn ${state.gameTab === key ? 'active' : ''}" data-game-tab="${key}">${label}</button>
+      `).join('');
+
+      document.querySelectorAll('[data-game-tab]').forEach((button) => {
+        button.addEventListener('click', () => {
+          state.gameTab = button.dataset.gameTab;
+          renderGameTabs();
+          renderArcadeGame();
+        });
+      });
+    }
+
+    function renderArcadeGame() {
+      const board = document.getElementById('gameChallengeBoard');
+      if (!board) return;
+
+      let html = '';
+      if (state.gameTab === 'phonicsMatch') {
+        const items = phonicsMatchSets[state.ageGroup] || phonicsMatchSets.early;
+        html = `
+          <div class="mini-game-card">
+            <h3>Matching phonics</h3>
+            <div class="match-grid">
+              <div class="match-col">
+                <h4>Sound</h4>
+                ${items.map((item) => `<button class="match-item" data-match-sound="${item.sound}" data-match-type="sound" onclick="handlePhonicsMatch(this)">${item.sound}</button>`).join('')}
+              </div>
+              <div class="match-col">
+                <h4>Picture</h4>
+                ${items.map((item) => `<button class="match-item" data-match-sound="${item.sound}" data-match-type="picture" onclick="handlePhonicsMatch(this)">${item.icon}</button>`).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (state.gameTab === 'treasureHunt') {
+        const items = treasureHuntSets[state.ageGroup] || treasureHuntSets.early;
+        html = `
+          <div class="mini-game-card">
+            <h3>Treasure hunt</h3>
+            ${items.map((item, index) => `
+              <div class="prompt-box" style="margin-top:10px;">
+                <strong>${index + 1}. ${item.clue}</strong>
+                <div class="button-row">
+                  ${item.options.map((option) => `<button class="rhyme-option" data-treasure-answer="${item.answer}" data-treasure-option="${option}" onclick="checkTreasureChoice(this)">${option}</button>`).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else if (state.gameTab === 'pictureSelection') {
+        const items = pictureSelectionSets[state.ageGroup] || pictureSelectionSets.early;
+        const current = items[Math.floor(Math.random() * items.length)];
+        html = `
+          <div class="mini-game-card">
+            <h3>Picture selection</h3>
+            <div class="prompt-box">
+              <h4>${current.prompt}</h4>
+              <div class="drop-zone" data-picture-answer="${current.answer}" style="margin-top:10px; min-height: 110px; display:flex; align-items:center; justify-content:center; flex-direction:column; font-size:1.15rem; text-align:center; padding:12px;">Drop the correct picture here</div>
+              <div class="button-row" style="margin-top:12px; flex-wrap:wrap;">
+                ${current.options.map((option) => `
+                  <button class="match-item picture-choice" type="button" draggable="true" data-picture-option="${option}" data-picture-answer="${current.answer}" aria-label="${option}" onclick="checkPictureChoice(this)">
+                    <span style="font-size:2.1rem; display:block;">${getPictureForWord(option)}</span>
+                    <span style="font-size:0.9rem; margin-top:4px;">${option}</span>
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+
+        const dropZone = board.querySelector('.drop-zone');
+        if (dropZone) {
+          dropZone.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dropZone.classList.add('dragover');
+          });
+          dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+          dropZone.addEventListener('drop', (event) => {
+            event.preventDefault();
+            const option = event.dataTransfer.getData('text/plain');
+            const answer = dropZone.dataset.pictureAnswer;
+            const correct = option === answer;
+            dropZone.classList.remove('dragover');
+            dropZone.innerHTML = correct
+              ? `<span style="font-size:2rem;">✅ ${getPictureForWord(option)}</span><div style="font-size:1rem; margin-top:6px;">${option}</div>`
+              : `<span style="font-size:1.5rem;">Try again</span><div style="font-size:1rem; margin-top:6px;">${getPictureForWord(option)}</div>`;
+            if (correct) {
+              awardReward('picture', 'Picture selection', '🖼️');
+              speakText(option);
+            }
+          });
+        }
+
+        board.querySelectorAll('[draggable="true"]').forEach((tile) => {
+          tile.addEventListener('dragstart', (event) => {
+            event.dataTransfer.setData('text/plain', tile.dataset.pictureOption);
+            event.dataTransfer.setData('application/x-picture-answer', tile.dataset.pictureAnswer);
+          });
+        });
+      } else {
+        const pool = getProgressiveReadingChallengePool();
+        const current = pool[state.readingChallengeIndex % pool.length];
+        html = `
+          <div class="mini-game-card">
+            <h3>Mini reading challenge</h3>
+            <div class="prompt-box" style="margin-top:10px;">
+              <strong>Challenge ${state.readingChallengeIndex + 1}</strong>
+              <p style="margin-top:8px; font-weight:700;">${current.prompt}</p>
+              <p style="margin-top:8px;">${current.question}</p>
+              <div>
+                ${current.options.map((option) => `<button class="rhyme-option" data-reading-answer="${current.answer}" data-reading-option="${option}" onclick="checkMiniReadingChoice(this)">${option}</button>`).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      board.innerHTML = html;
+    }
+
+    function getPictureForWord(word) {
+      const pictureMap = {
+        snake: '🐍', apple: '🍎', teddy: '🧸', panda: '🐼', ship: '🚢', chair: '🪑', sock: '🧦', night: '🌙', boat: '🛶', cow: '🐮', train: '🚆', tree: '🌳', tiger: '🐯', ball: '⚽', bird: '🐦', block: '🧱',
+        sun: '☀️', cat: '🐱', cap: '🧢', cloud: '☁️', dog: '🐶', hat: '🎩', pan: '🍳', sat: '🐱', bin: '🗑️', rain: '🌧️', fish: '🐠', bus: '🚌', car: '🚗',
+        book: '📘', pen: '🖊️', desk: '🪑', ruler: '📏', pencil: '✏️', bag: '🎒', bike: '🚲', plane: '✈️', frog: '🐸', horse: '🐴',
+        draw: '🎨', read: '📖', sing: '🎵', run: '🏃', jump: '🤾', dance: '💃',
+        apple: '🍎', snake: '🐍', ship: '🚢', chair: '🪑', sock: '🧦', night: '🌙', boat: '🛶', cow: '🐮', tree: '🌳', block: '🧱'
+      };
+      return pictureMap[String(word).toLowerCase()] || word;
+    }
+
+    function renderPhonicsMatchGame() {
+      renderArcadeGame();
+    }
+
+    function handlePhonicsMatch(button) {
+      const selected = document.querySelectorAll('#phonicsMatchBoard .match-item.selected');
+      if (button.classList.contains('matched')) return;
+      button.classList.add('selected');
+      const chosen = document.querySelectorAll('#phonicsMatchBoard .match-item.selected');
+      if (chosen.length === 2) {
+        const [one, two] = [...chosen];
+        const a = one.dataset.matchSound;
+        const b = two.dataset.matchSound;
+        const correct = a === b;
+        chosen.forEach((item) => item.classList.remove('selected'));
+        if (correct) {
+          chosen.forEach((item) => item.classList.add('matched'));
+          awardReward('phonics', 'Sound match', '🎵');
+          speakText(a);
+        } else {
+          chosen.forEach((item) => item.classList.add('wrong'));
+          setTimeout(() => chosen.forEach((item) => item.classList.remove('wrong')), 500);
+        }
+      }
+    }
+
+    function renderTreasureHuntGame() {
+      renderArcadeGame();
+    }
+
+    function checkTreasureChoice(button) {
+      const answer = button.dataset.treasureAnswer;
+      const option = button.dataset.treasureOption;
+      const correct = option === answer;
+      button.classList.add(correct ? 'correct' : 'wrong');
+      button.textContent = `${option}${correct ? ' ✓' : ' ✗'}`;
+      if (correct) {
+        awardReward('treasure', 'Treasure hunt', '🗺️');
+        speakText(option);
+      }
+    }
+
+    function renderPictureSelectionGame() {
+      renderArcadeGame();
+    }
+
+    function checkPictureChoice(button) {
+      const option = button.dataset.pictureOption;
+      const answer = button.dataset.pictureAnswer;
+      const correct = option === answer;
+      button.classList.add(correct ? 'matched' : 'wrong');
+      button.innerHTML = `
+        <span style="font-size:2rem; display:block;">${correct ? '✅' : '✗'} ${getPictureForWord(option)}</span>
+        <span style="font-size:0.9rem; margin-top:4px;">${option}</span>
+      `;
+      if (correct) {
+        awardReward('picture', 'Picture selection', '🖼️');
+        speakText(option);
+      }
+    }
+
+    function renderShortStoryCards() {
+      const wrap = document.getElementById('shortStoryCards');
+      if (!wrap) return;
+      const stories = [
+        { title: 'Sam the Cat', image: '🐱', text: 'Sam sat on a mat. Sam saw a red hat. Sam was happy and ran.', accent: '#f472b6' },
+        { title: 'The Big Sun', image: '☀️', text: 'The sun is up. A dog is in the sun. We run and laugh.', accent: '#f59e0b' },
+        { title: 'The Pet Fish', image: '🐠', text: 'The fish swims in the pond. The fish is red and small. We watch it glow.', accent: '#22c55e' },
+        { title: 'The Rainy Walk', image: '🌧️', text: 'It rained. We put on our coats. We splashed in the puddles and smiled.', accent: '#60a5fa' }
+      ];
+      wrap.innerHTML = stories.map((story) => `
+        <article class="mini-book">
+          <div class="book-image" style="background: linear-gradient(135deg, ${story.accent}, #60a5fa);">${story.image}</div>
+          <h3>${story.title}</h3>
+          <div class="book-page">${story.text}</div>
+        </article>
+      `).join('');
+    }
+
+    function renderMiniReadingChallengeBoard() {
+      renderArcadeGame();
+    }
+
+    function checkMiniReadingChoice(button) {
+      const correct = button.dataset.readingOption === button.dataset.readingAnswer;
+      button.classList.add(correct ? 'correct' : 'wrong');
+      button.textContent = `${button.dataset.readingOption}${correct ? ' ✓' : ' ✗'}`;
+      if (correct) {
+        state.challengeStreak += 1;
+        state.readingChallengeIndex += 1;
+        awardReward('reading', 'Reading challenge', '📖');
+        speakText(button.dataset.readingOption);
+        setTimeout(() => renderArcadeGame(), 700);
+      } else {
+        state.challengeStreak = 0;
+        speakText('Try again');
+      }
     }
 
     function handleMatchPick(button) {
@@ -2290,13 +2977,19 @@
       return englishVoice || null;
     }
 
+    function getPureJollySoundText(sound) {
+      const key = String(sound || '').trim().toLowerCase();
+      if (!key) return '';
+      return pureJollyPhonemeMap[key] || key;
+    }
+
     function speakJollySound(sound) {
       const key = String(sound).trim().toLowerCase();
-      const text = jollySoundMap[key] || key;
-      const utterance = new SpeechSynthesisUtterance(String(text));
+      const purePhoneme = getPureJollySoundText(key);
+      const utterance = new SpeechSynthesisUtterance(String(purePhoneme));
       utterance.lang = 'en-GB';
       utterance.rate = 0.55;
-      utterance.pitch = 1.2;
+      utterance.pitch = 0.9;
       utterance.volume = 1;
       utterance.voice = getFriendlyBritishVoice();
       window.speechSynthesis.cancel();
@@ -2366,6 +3059,7 @@
       const articles = [
         {
           title: 'A Busy Morning',
+          image: '🌅',
           text: 'Mia woke up early. She put on her school jumper and packed her lunch box. The sky was bright and the birds were singing in the trees. Mia smiled when she saw her friend Sam by the gate. They walked to school together and talked about the story they had read the night before.',
           questions: [
             { q: 'Why did Mia smile?', options: ['She saw her friend Sam', 'She was tired', 'She missed home'], answer: 'She saw her friend Sam' },
@@ -2375,18 +3069,40 @@
         },
         {
           title: 'The Rainy Day',
+          image: '🌧️',
           text: 'On Saturday, Noah put on his blue coat and took his umbrella to the park. It began to rain gently, so the path became shiny and dark. Noah watched the puddles grow bigger and listened to the sound of water falling on the leaves. Then the sun came out and the park looked colourful again.',
           questions: [
             { q: 'What did Noah carry?', options: ['An umbrella', 'A football', 'A hat'], answer: 'An umbrella' },
             { q: 'What happened after the rain?', options: ['The sun came out', 'The park closed', 'It got darker'], answer: 'The sun came out' },
             { q: 'How did the path look?', options: ['Shiny and dark', 'Very dusty', 'Full of snow'], answer: 'Shiny and dark' }
           ]
+        },
+        {
+          title: 'The Secret Garden',
+          image: '🌼',
+          text: 'At the end of the lane, Lila found a small garden hidden behind a gate. There were flowers in bright colours, and a little stone path curled through the grass. Lila sat on a bench and listened to bees buzzing near the roses.',
+          questions: [
+            { q: 'Where did Lila find the garden?', options: ['Behind a gate', 'In the school hall', 'Near the river'], answer: 'Behind a gate' },
+            { q: 'What did Lila hear?', options: ['Bees buzzing', 'Loud cars', 'A train whistle'], answer: 'Bees buzzing' },
+            { q: 'What was on the path?', options: ['A stone path', 'A wooden bridge', 'A red wall'], answer: 'A stone path' }
+          ]
+        },
+        {
+          title: 'The Long Walk',
+          image: '🚶',
+          text: 'The class walked slowly along the hill and stopped at the old oak tree. It was taller than the school roof and its branches reached far out. The children used the tree as a landmark and laughed when they tried to count the leaves.',
+          questions: [
+            { q: 'Where did the class stop?', options: ['At the old oak tree', 'At the library', 'At the shops'], answer: 'At the old oak tree' },
+            { q: 'What did the children use the tree for?', options: ['As a landmark', 'As a lunch table', 'As a bus stop'], answer: 'As a landmark' },
+            { q: 'What did they do with the leaves?', options: ['They tried to count them', 'They planted them', 'They threw them away'], answer: 'They tried to count them' }
+          ]
         }
       ];
 
-      const article = articles[Math.floor(Math.random() * articles.length)];
+      const article = articles[state.comprehensionIndex % articles.length];
       wrap.innerHTML = `
         <div class="assignment-box">
+          <div class="book-image" style="background: linear-gradient(135deg, #60a5fa, #38bdf8); min-height: 120px; font-size: 3rem;">${article.image}</div>
           <h3>${article.title}</h3>
           <p>${article.text}</p>
           <div style="margin-top:14px;">
@@ -2407,7 +3123,13 @@
       const correct = option === answer;
       button.classList.add(correct ? 'correct' : 'wrong');
       button.textContent = `${option}${correct ? ' ✓' : ' ✗'}`;
-      if (correct) speakText(option);
+      if (correct) {
+        state.comprehensionIndex += 1;
+        speakText(option);
+        setTimeout(() => renderReadingCompBoard(), 800);
+      } else {
+        speakText('Try again');
+      }
     }
 
     function bindNav() {
@@ -2438,13 +3160,17 @@
       renderBlendWords();
       renderReadingSoundButtons();
       renderCvcWordGrid();
+      renderCvcChoiceGame();
       renderPhaseBooks();
+      renderShortStoryCards();
       renderRhymeGame();
       renderTenseCards();
+      renderIrregularVerbGame();
       renderStoryPrompts();
       renderReadingCompBoard();
       renderHfwTabs();
       renderHfwMemory();
+      renderVocabularyTabs();
       renderVocabulary();
       renderMatchTabs();
       renderMatchingBoard();
@@ -2452,6 +3178,8 @@
       renderRewardsPanel();
       renderTeacherDashboard();
       renderTeacherSelection();
+      renderGameTabs();
+      renderArcadeGame();
       renderAccountAccess();
       if ('speechSynthesis' in window) {
         window.speechSynthesis.onvoiceschanged = () => speakText('Ready to learn');
