@@ -1029,7 +1029,7 @@
           <button class="btn warning" onclick="askHelper()">Ask helper</button>
           <button class="btn secondary" onclick="speakText(document.getElementById('aiOutput').textContent)">Listen</button>
         </div>
-        <div id="aiOutput" class="ai-output" aria-live="polite">Say the sound slowly: s s s. Then blend the word: s-a-t, sat. You can do it.</div>
+        <div id="aiOutput" class="ai-output" aria-live="polite">Say the sound clearly: s. Then blend the word: s-a-t, sat. You can do it.</div>
       </div>
     </section>
   </main>
@@ -1094,16 +1094,17 @@
     };
 
     const pureJollyPhonemeMap = {
-      s: 's s s', a: 'a a a', t: 't t t', p: 'p p p', i: 'i i i', n: 'n n n',
-      m: 'm m m', d: 'd d d', g: 'g g g', o: 'o o o', c: 'c c c', k: 'k k k',
-      ck: 'k k k', e: 'e e e', u: 'u u u', r: 'r r r', h: 'h h h', b: 'b b b',
-      ff: 'f f f', ll: 'l l l', ss: 's s s', zz: 'z z z', qu: 'qu qu qu',
-      ch: 'ch ch ch', sh: 'sh sh sh', th: 'th th th', ng: 'ng ng ng', ai: 'ai ai ai', ee: 'ee ee ee',
-      bl: 'bl bl bl', st: 'st st st', tr: 'tr tr tr', cl: 'cl cl cl', mp: 'mp mp mp', nd: 'nd nd nd',
-      ay: 'ay ay ay', igh: 'igh igh igh', oa: 'oa oa oa', oo: 'oo oo oo', ow: 'ow ow ow', ie: 'ie ie ie',
-      or: 'or or or', air: 'air air air', ar: 'ar ar ar', er: 'er er er', ur: 'ur ur ur', oi: 'oi oi oi',
-      ue: 'ue ue ue', aw: 'aw aw aw', ea: 'ea ea ea', ir: 'ir ir ir', oy: 'oy oy oy',
-      ph: 'f f f', wh: 'wh wh wh', kn: 'n n n', gn: 'n n n', wr: 'r r r'
+      s: 'sss', a: 'ah', t: 't', i: 'ih', p: 'p', n: 'nnn',
+      m: 'mmm', d: 'd', g: 'g', o: 'oh', c: 'k', k: 'k', e: 'eh',
+      u: 'uh', r: 'rrr', h: 'h', b: 'b', f: 'f', l: 'l', j: 'j',
+      v: 'v', w: 'w', x: 'ks', y: 'y', z: 'zzz', ck: 'k', ff: 'f',
+      ll: 'l', ss: 'sss', zz: 'zzz', qu: 'kw', ch: 'ch', sh: 'sh',
+      th: 'th', ng: 'ng', ai: 'ay', ee: 'ee', igh: 'igh', oa: 'oh',
+      oo: 'oo', ow: 'ow', ie: 'ee', or: 'or', air: 'air', ar: 'ar',
+      er: 'er', ur: 'ur', oi: 'oi', ue: 'oo', aw: 'aw', ea: 'ee',
+      ir: 'er', oy: 'oi', ph: 'f', wh: 'w', kn: 'n', gn: 'n', wr: 'r',
+      bl: 'bl', st: 'st', tr: 'tr', cl: 'cl', mp: 'mp', nd: 'nd',
+      ay: 'ay', ear: 'eer', ure: 'yur', ou: 'ow'
     };
 
     const jollySoundTips = {
@@ -2931,7 +2932,7 @@
       const prompt = document.getElementById('aiPrompt').value.toLowerCase();
       const output = document.getElementById('aiOutput');
       if (prompt.includes('sound') || prompt.includes('s')) {
-        output.textContent = 'Say the sound slowly: s s s. Then listen to the next sound. Blend it into a word like s-a-t.';
+        output.textContent = 'Say the sound once: s. Then listen to the next sound and blend it into a word like s-a-t.';
       } else if (prompt.includes('word') || prompt.includes('sat') || prompt.includes('cat')) {
         output.textContent = 'Break the word into sounds and say each one clearly. Then blend them together: s-a-t, sat.';
       } else if (prompt.includes('monster') || prompt.includes('dog')) {
@@ -2980,39 +2981,60 @@
     function getPureJollySoundText(sound) {
       const key = String(sound || '').trim().toLowerCase();
       if (!key) return '';
-      return pureJollyPhonemeMap[key] || key;
+      const value = pureJollyPhonemeMap[key] || key;
+      const parts = String(value).trim().split(/\s+/).filter(Boolean);
+      return parts.length > 1 ? parts[0] : String(value).trim();
+    }
+
+    const phonicsAudioFileMap = {
+      s: 'sounds/s.wav', a: 'sounds/a.wav', t: 'sounds/t.wav', i: 'sounds/i.wav', p: 'sounds/p.wav', n: 'sounds/n.wav',
+      m: 'sounds/m.wav', d: 'sounds/d.wav', g: 'sounds/g.wav', o: 'sounds/o.wav', c: 'sounds/c.wav', k: 'sounds/k.wav',
+      e: 'sounds/e.wav', u: 'sounds/u.wav', r: 'sounds/r.wav', h: 'sounds/h.wav', b: 'sounds/b.wav', f: 'sounds/f.wav',
+      l: 'sounds/l.wav', j: 'sounds/j.wav', v: 'sounds/v.wav', w: 'sounds/w.wav', x: 'sounds/x.wav', y: 'sounds/y.wav',
+      z: 'sounds/z.wav', ck: 'sounds/ck.wav', ff: 'sounds/ff.wav', ll: 'sounds/ll.wav', ss: 'sounds/ss.wav', zz: 'sounds/zz.wav',
+      qu: 'sounds/qu.wav', ch: 'sounds/ch.wav', sh: 'sounds/sh.wav', th: 'sounds/th.wav', ng: 'sounds/ng.wav',
+      ai: 'sounds/ai.wav', ee: 'sounds/ee.wav', igh: 'sounds/igh.wav', oa: 'sounds/oa.wav', oo: 'sounds/oo.wav',
+      ow: 'sounds/ow.wav', ie: 'sounds/ie.wav', or: 'sounds/or.wav', air: 'sounds/air.wav', ar: 'sounds/ar.wav',
+      er: 'sounds/er.wav', ur: 'sounds/ur.wav', oi: 'sounds/oi.wav', ue: 'sounds/ue.wav', aw: 'sounds/aw.wav',
+      ea: 'sounds/ea.wav', ir: 'sounds/ir.wav', oy: 'sounds/oy.wav', ph: 'sounds/ph.wav', wh: 'sounds/wh.wav',
+      kn: 'sounds/kn.wav', gn: 'sounds/gn.wav', wr: 'sounds/wr.wav', bl: 'sounds/bl.wav', st: 'sounds/st.wav',
+      tr: 'sounds/tr.wav', cl: 'sounds/cl.wav', mp: 'sounds/mp.wav', nd: 'sounds/nd.wav', ay: 'sounds/ay.wav',
+      ear: 'sounds/ear.wav', ure: 'sounds/ure.wav', ou: 'sounds/ou.wav'
+    };
+
+    function playPhonicsClip(sound) {
+      const key = String(sound || '').trim().toLowerCase();
+      if (!key) return;
+
+      const audioUrl = phonicsAudioFileMap[key] || null;
+      if (audioUrl) {
+        const audio = new Audio(audioUrl);
+        audio.volume = 1;
+        audio.play().catch(() => {});
+        return;
+      }
+
+      // Do not use speech synthesis for phonics. Browser TTS repeats or distorts the phoneme text,
+      // which is why a pure /s/ may be heard as 'sss' or a letter-name sequence.
+      console.warn('No recorded phonics clip found for:', key);
     }
 
     function speakJollySound(sound) {
       const key = String(sound).trim().toLowerCase();
-      const purePhoneme = getPureJollySoundText(key);
-      const utterance = new SpeechSynthesisUtterance(String(purePhoneme));
-      utterance.lang = 'en-GB';
-      utterance.rate = 0.55;
-      utterance.pitch = 0.9;
-      utterance.volume = 1;
-      utterance.voice = getFriendlyBritishVoice();
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(utterance);
+      playPhonicsClip(key);
     }
 
     function speakText(text) {
-      if (!('speechSynthesis' in window) || !text) return;
+      if (!text) return;
       const cleaned = String(text).trim().toLowerCase();
       const soundKey = Object.keys(jollySoundMap).find((key) => cleaned === key || cleaned === jollySoundMap[key]);
       if (soundKey) {
-        speakJollySound(soundKey);
+        playPhonicsClip(soundKey);
         return;
       }
 
-      const utterance = new SpeechSynthesisUtterance(String(text));
-      utterance.lang = 'en-GB';
-      utterance.rate = 0.72;
-      utterance.pitch = 1.08;
-      utterance.volume = 1;
-      utterance.voice = getFriendlyBritishVoice();
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(utterance);
+      // Browser TTS is intentionally disabled for phonics because it repeats the sound as a letter name.
+      console.warn('No recorded audio for text:', text);
     }
 
     function applyAgeGroup(ageGroup) {
