@@ -3002,6 +3002,42 @@
       ear: 'sounds/ear.wav', ure: 'sounds/ure.wav', ou: 'sounds/ou.wav'
     };
 
+    function getSiteBasePath() {
+      const pathname = window.location.pathname || '/';
+      const normalized = pathname.replace(/index\.html?$/i, '').replace(/\\/g, '/');
+      const trimmed = normalized.replace(/\/+$/, '');
+      return trimmed && trimmed !== '/' ? trimmed : '';
+    }
+
+    function resolveAudioUrl(relativeUrl) {
+      const clean = String(relativeUrl || '').replace(/^\/+/, '');
+      const basePath = getSiteBasePath();
+      const candidates = [
+        clean,
+        `./${clean}`,
+        `${basePath ? basePath + '/' : ''}${clean}`,
+        `/${clean}`,
+        new URL(clean, window.location.href).href
+      ];
+      return Array.from(new Set(candidates.filter(Boolean)));
+    }
+
+    function playBrowserPhonicsFallback(sound) {
+      if (!('speechSynthesis' in window)) return;
+      const key = String(sound || '').trim().toLowerCase();
+      const spokenText = getPureJollySoundText(key) || key;
+      if (!spokenText) return;
+
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(spokenText);
+      const britishVoice = getFriendlyBritishVoice();
+      if (britishVoice) utterance.voice = britishVoice;
+      utterance.rate = 0.7;
+      utterance.pitch = 1.2;
+      utterance.volume = 1;
+      window.speechSynthesis.speak(utterance);
+    }
+
     function playPhonicsClip(sound) {
       const key = String(sound || '').trim().toLowerCase();
       if (!key) return;
@@ -3009,42 +3045,36 @@
       const baseAudioUrl = phonicsAudioFileMap[key] || null;
       if (!baseAudioUrl) {
         console.warn('No recorded phonics clip found for:', key);
+        playBrowserPhonicsFallback(key);
         return;
       }
 
-      const candidateUrls = Array.from(new Set([
-        baseAudioUrl,
-        `./${baseAudioUrl.replace(/^\/+/, '')}`,
-        `${window.location.origin}${baseAudioUrl.startsWith('/') ? baseAudioUrl : '/' + baseAudioUrl.replace(/^\/+/, '')}`,
-        new URL(baseAudioUrl, window.location.href).href
-      ]));
+      const candidateUrls = resolveAudioUrl(baseAudioUrl);
+      let lastError = null;
 
       for (const audioUrl of candidateUrls) {
         try {
           const audio = new Audio(audioUrl);
           audio.preload = 'auto';
           audio.volume = 1;
-          audio.onerror = () => {
-            // Try the next candidate if the browser cannot resolve this path.
-          };
           const playPromise = audio.play();
           if (playPromise && typeof playPromise.then === 'function') {
-            playPromise.then(() => {
-              return;
-            }).catch(() => {
-              // The browser may block playback until a user interaction occurs.
-              // The button click itself already triggers this function, so the next fallback is not needed here.
+            playPromise.catch((error) => {
+              lastError = error;
+              console.warn('Audio blocked or failed for', key, audioUrl, error);
+              playBrowserPhonicsFallback(key);
             });
+            return;
           }
           return;
         } catch (error) {
+          lastError = error;
           console.warn('Could not create audio for', key, audioUrl, error);
         }
       }
 
-      // Do not use speech synthesis for phonics. Browser TTS repeats or distorts the phoneme text,
-      // which is why a pure /s/ may be heard as 'sss' or a letter-name sequence.
-      console.warn('No recorded phonics clip could be loaded for:', key);
+      console.warn('No recorded phonics clip could be loaded for:', key, lastError || '');
+      playBrowserPhonicsFallback(key);
     }
 
     function speakJollySound(sound) {
