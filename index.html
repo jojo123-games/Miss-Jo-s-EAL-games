@@ -3006,17 +3006,45 @@
       const key = String(sound || '').trim().toLowerCase();
       if (!key) return;
 
-      const audioUrl = phonicsAudioFileMap[key] || null;
-      if (audioUrl) {
-        const audio = new Audio(audioUrl);
-        audio.volume = 1;
-        audio.play().catch(() => {});
+      const baseAudioUrl = phonicsAudioFileMap[key] || null;
+      if (!baseAudioUrl) {
+        console.warn('No recorded phonics clip found for:', key);
         return;
+      }
+
+      const candidateUrls = Array.from(new Set([
+        baseAudioUrl,
+        `./${baseAudioUrl.replace(/^\/+/, '')}`,
+        `${window.location.origin}${baseAudioUrl.startsWith('/') ? baseAudioUrl : '/' + baseAudioUrl.replace(/^\/+/, '')}`,
+        new URL(baseAudioUrl, window.location.href).href
+      ]));
+
+      for (const audioUrl of candidateUrls) {
+        try {
+          const audio = new Audio(audioUrl);
+          audio.preload = 'auto';
+          audio.volume = 1;
+          audio.onerror = () => {
+            // Try the next candidate if the browser cannot resolve this path.
+          };
+          const playPromise = audio.play();
+          if (playPromise && typeof playPromise.then === 'function') {
+            playPromise.then(() => {
+              return;
+            }).catch(() => {
+              // The browser may block playback until a user interaction occurs.
+              // The button click itself already triggers this function, so the next fallback is not needed here.
+            });
+          }
+          return;
+        } catch (error) {
+          console.warn('Could not create audio for', key, audioUrl, error);
+        }
       }
 
       // Do not use speech synthesis for phonics. Browser TTS repeats or distorts the phoneme text,
       // which is why a pure /s/ may be heard as 'sss' or a letter-name sequence.
-      console.warn('No recorded phonics clip found for:', key);
+      console.warn('No recorded phonics clip could be loaded for:', key);
     }
 
     function speakJollySound(sound) {
