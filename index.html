@@ -795,6 +795,7 @@
     <button class="nav-btn" data-target="books">Books</button>
     <button class="nav-btn" data-target="hfw">HFW Memory</button>
     <button class="nav-btn" data-target="vocabulary">Vocabulary</button>
+    <button class="nav-btn" data-target="allaboutme">All about me</button>
     <button class="nav-btn" data-target="rhymes">Rhymes</button>
     <button class="nav-btn" data-target="grammar">Grammar</button>
     <button class="nav-btn" data-target="story">Story</button>
@@ -905,6 +906,29 @@
       <p>Listen to the word, look at the picture and click the correct item.</p>
       <div class="switch-row" id="vocabTabs"></div>
       <div id="vocabGrid" class="word-grid"></div>
+    </section>
+
+    <section id="allaboutme" class="game-card">
+      <h2>All About Me</h2>
+      <p>Colour a picture of yourself, add your details and say what you like best.</p>
+      <div class="section-grid">
+        <div class="prompt-box">
+          <h3>My details</h3>
+          <input id="allAboutMeName" type="text" placeholder="My name" style="width:100%; margin-bottom:10px; padding:12px; border-radius:12px; border:2px solid #dbe9f7;" />
+          <input id="allAboutMeAge" type="number" min="3" max="11" placeholder="My age" style="width:100%; margin-bottom:10px; padding:12px; border-radius:12px; border:2px solid #dbe9f7;" />
+          <input id="allAboutMeFood" type="text" placeholder="Favourite food" style="width:100%; margin-bottom:10px; padding:12px; border-radius:12px; border:2px solid #dbe9f7;" />
+          <input id="allAboutMeColour" type="text" placeholder="Favourite colour" style="width:100%; margin-bottom:12px; padding:12px; border-radius:12px; border:2px solid #dbe9f7;" />
+          <div class="button-row">
+            <button class="btn success" type="button" onclick="renderAllAboutMePicture()">Generate my picture</button>
+            <button class="btn secondary" type="button" onclick="speakText(document.getElementById('allAboutMeSummary').textContent)">Listen</button>
+          </div>
+        </div>
+        <div class="prompt-box">
+          <h3>My portrait</h3>
+          <svg id="allAboutMeSvg" viewBox="0 0 260 260" style="width:100%; max-width:260px; display:block; margin:0 auto; background:#f4f9ff; border-radius:18px; border:2px solid #dbe9f7;"></svg>
+          <div id="allAboutMeSummary" style="margin-top:12px; font-weight:700;">Hi! I am a happy learner.</div>
+        </div>
+      </div>
     </section>
 
     <section id="rhymes" class="game-card">
@@ -1198,15 +1222,15 @@
     const ageGroups = {
       early: {
         label: '3–5',
-        nav: ['read', 'phonics', 'reading', 'books', 'games', 'accounts', 'ai']
+        nav: ['read', 'phonics', 'reading', 'books', 'vocabulary', 'allaboutme', 'games', 'accounts', 'ai']
       },
       primary: {
         label: '5–7',
-        nav: ['phonics', 'reading', 'books', 'games', 'hfw', 'accounts', 'ai']
+        nav: ['phonics', 'reading', 'books', 'hfw', 'vocabulary', 'allaboutme', 'games', 'accounts', 'ai']
       },
       upper: {
         label: '7–11',
-        nav: ['phonics', 'reading', 'books', 'readingcomp', 'story', 'games', 'hfw', 'vocabulary', 'matching', 'accounts', 'ai']
+        nav: ['phonics', 'reading', 'books', 'readingcomp', 'story', 'games', 'hfw', 'vocabulary', 'allaboutme', 'matching', 'accounts', 'ai']
       }
     };
 
@@ -1222,6 +1246,7 @@
       readingChallengeIndex: 0,
       challengeStreak: 0,
       comprehensionIndex: 0,
+      comprehensionProgress: {},
       students: loadStudents(),
       selectedStudent: null,
       rewards: loadRewards(),
@@ -1488,8 +1513,12 @@
       const allMatch = Object.entries(expected).every(([key, colour]) => {
         const ids = getTargetPartIds(key);
         return ids.some((id) => {
-          const fill = document.getElementById(`part-${id}`)?.getAttribute('fill');
-          return fill && colourToHex(fill).toLowerCase() === colourToHex(colour).toLowerCase();
+          const part = document.getElementById(`part-${id}`);
+          if (!part) return false;
+          const fill = part.getAttribute('fill');
+          const stroke = part.getAttribute('stroke');
+          const actual = colourToHex(fill || stroke || '');
+          return actual.toLowerCase() === colourToHex(colour).toLowerCase();
         });
       });
 
@@ -1529,6 +1558,9 @@
         const part = document.getElementById(`part-${id}`);
         if (part) {
           part.setAttribute('fill', colourHex);
+          if (part.getAttribute('stroke')) {
+            part.setAttribute('stroke', colourHex);
+          }
         }
       });
     }
@@ -1646,9 +1678,61 @@
 
     function getColourTarget(task, selectedColour = null) {
       const prompt = task.prompt.toLowerCase();
+
+      if (task.target === 'monster') {
+        if (prompt.includes('mouth')) return 'mouth';
+        if (prompt.includes('orange') && prompt.includes('arm')) return 'arms';
+        if (prompt.includes('green') && prompt.includes('leg')) return 'legs';
+        if (prompt.includes('blue')) return 'body';
+        if (prompt.includes('pink')) return 'arms';
+        if (prompt.includes('purple')) return 'body';
+        if (prompt.includes('white')) return 'body';
+        if (selectedColour && selectedColour.toLowerCase() === 'orange') return 'arms';
+        if (selectedColour && selectedColour.toLowerCase() === 'green') return 'legs';
+        if (selectedColour && selectedColour.toLowerCase() === 'red') return 'mouth';
+      }
+
+      if (task.target === 'dog') {
+        if (prompt.includes('tail')) return 'tail';
+        if (prompt.includes('ear')) return 'ear';
+        if (prompt.includes('brown')) return 'body';
+        if (selectedColour && selectedColour.toLowerCase() === 'orange') return 'tail';
+        if (selectedColour && selectedColour.toLowerCase() === 'brown') return 'body';
+      }
+
+      if (task.target === 'cat') {
+        if (prompt.includes('paw')) return 'paws';
+        if (prompt.includes('black')) return 'body';
+        if (prompt.includes('white')) return 'paws';
+        if (selectedColour && selectedColour.toLowerCase() === 'white') return 'paws';
+        if (selectedColour && selectedColour.toLowerCase() === 'black') return 'body';
+      }
+
+      if (task.target === 'frog') {
+        if (prompt.includes('green')) return 'body';
+        if (selectedColour && selectedColour.toLowerCase() === 'green') return 'body';
+      }
+
+      if (task.target === 'bed') {
+        if (prompt.includes('blue')) return 'bed';
+        if (selectedColour && selectedColour.toLowerCase() === 'blue') return 'bed';
+      }
+
+      if (task.target === 'bath') {
+        if (prompt.includes('bath')) return 'bath';
+        if (prompt.includes('blue')) return 'bath';
+        if (selectedColour && selectedColour.toLowerCase() === 'blue') return 'bath';
+      }
+
+      if (task.target === 'table') {
+        if (prompt.includes('table')) return 'table';
+        if (prompt.includes('orange')) return 'table';
+        if (selectedColour && selectedColour.toLowerCase() === 'orange') return 'table';
+      }
+
       if (selectedColour) {
         const targetMap = {
-          body: ['blue', 'pink', 'purple', 'white', 'black', 'brown'],
+          body: ['blue', 'pink', 'purple', 'white', 'black', 'brown', 'green'],
           arms: ['orange'],
           legs: ['green'],
           mouth: ['red'],
@@ -1657,26 +1741,13 @@
           paws: ['white', 'black']
         };
         for (const [target, colours] of Object.entries(targetMap)) {
+          if (colours.includes(selectedColour.toLowerCase()) && target !== 'body') return target;
+        }
+        for (const [target, colours] of Object.entries(targetMap)) {
           if (colours.includes(selectedColour.toLowerCase())) return target;
         }
       }
-      if (task.target === 'monster') {
-        if (prompt.includes('mouth')) return 'mouth';
-        if (prompt.includes('blue')) return 'body';
-        if (prompt.includes('orange')) return 'arms';
-        if (prompt.includes('green')) return 'legs';
-        if (prompt.includes('pink')) return 'arms';
-        if (prompt.includes('purple')) return 'body';
-        if (prompt.includes('white')) return 'body';
-      }
-      if (task.target === 'dog') {
-        if (prompt.includes('brown')) return 'body';
-        if (prompt.includes('orange')) return 'tail';
-      }
-      if (task.target === 'cat') {
-        if (prompt.includes('black')) return 'body';
-        if (prompt.includes('white')) return 'paws';
-      }
+
       return 'body';
     }
 
@@ -2086,6 +2157,22 @@
         { word: 'pencil', emoji: '✏️', sound: 'pencil' },
         { word: 'bag', emoji: '🎒', sound: 'bag' }
       ],
+      family: [
+        { word: 'mum', emoji: '👩', sound: 'mum' },
+        { word: 'dad', emoji: '👨', sound: 'dad' },
+        { word: 'baby', emoji: '👶', sound: 'baby' },
+        { word: 'sister', emoji: '👧', sound: 'sister' },
+        { word: 'brother', emoji: '👦', sound: 'brother' },
+        { word: 'grandma', emoji: '👵', sound: 'grandma' }
+      ],
+      rooms: [
+        { word: 'kitchen', emoji: '🍽️', sound: 'kitchen' },
+        { word: 'bedroom', emoji: '🛏️', sound: 'bedroom' },
+        { word: 'bathroom', emoji: '🛁', sound: 'bathroom' },
+        { word: 'living room', emoji: '🛋️', sound: 'living room' },
+        { word: 'garden', emoji: '🌿', sound: 'garden' },
+        { word: 'hall', emoji: '🚪', sound: 'hall' }
+      ],
       transport: [
         { word: 'bus', emoji: '🚌', sound: 'bus' },
         { word: 'car', emoji: '🚗', sound: 'car' },
@@ -2101,6 +2188,22 @@
         { word: 'frog', emoji: '🐸', sound: 'frog' },
         { word: 'fish', emoji: '🐠', sound: 'fish' },
         { word: 'horse', emoji: '🐴', sound: 'horse' }
+      ],
+      food: [
+        { word: 'apple', emoji: '🍎', sound: 'apple' },
+        { word: 'bread', emoji: '🍞', sound: 'bread' },
+        { word: 'sandwich', emoji: '🥪', sound: 'sandwich' },
+        { word: 'fish', emoji: '🐟', sound: 'fish' },
+        { word: 'milk', emoji: '🥛', sound: 'milk' },
+        { word: 'cake', emoji: '🍰', sound: 'cake' }
+      ],
+      sports: [
+        { word: 'ball', emoji: '⚽', sound: 'ball' },
+        { word: 'run', emoji: '🏃', sound: 'run' },
+        { word: 'jump', emoji: '🤾', sound: 'jump' },
+        { word: 'swim', emoji: '🏊', sound: 'swim' },
+        { word: 'dance', emoji: '💃', sound: 'dance' },
+        { word: 'football', emoji: '⚽', sound: 'football' }
       ],
       activities: [
         { word: 'draw', emoji: '🎨', sound: 'draw' },
@@ -2218,11 +2321,23 @@
     function renderPhaseBooks() {
       const wrap = document.getElementById('phaseBooks');
       if (!wrap) return;
-      wrap.innerHTML = phaseBooks.map((book) => `
+
+      const phaseBookSet = [
+        { title: 'Phase 2 phonics', route: 'books/phase2/index.html', accent: '#f472b6', image: '🧩', pages: ['s a t p i n', 'Sam sat on a mat.', 'Pat the cat.'] },
+        { title: 'Phase 3 phonics', route: 'books/phase3/index.html', accent: '#22c55e', image: '🌿', pages: ['ch sh th ng', 'The ship is big.', 'The chick is in the tree.'] },
+        { title: 'Phase 4 phonics', route: 'books/phase4/index.html', accent: '#60a5fa', image: '🚀', pages: ['bl st tr cl', 'The stop sign is red.', 'A trip in the rain.'] },
+        { title: 'Phase 5 phonics', route: 'books/phase5/index.html', accent: '#f59e0b', image: '🌟', pages: ['ay igh oa oo', 'The day is bright.', 'The boat is on the sea.'] },
+        { title: 'Nursery rhymes', route: 'books/nursery-rhymes/index.html', accent: '#8b5cf6', image: '🎵', pages: ['Twinkle, twinkle.', 'Row, row, row your boat.', 'Mary had a little lamb.'] }
+      ];
+
+      wrap.innerHTML = phaseBookSet.map((book) => `
         <article class="mini-book">
           <div class="book-image" style="background: linear-gradient(135deg, ${book.accent}, #60a5fa);">${book.image}</div>
           <h3>${book.title}</h3>
           ${book.pages.map((page) => `<div class="book-page">${page}</div>`).join('')}
+          <div class="button-row" style="margin-top:10px;">
+            <a class="btn secondary" href="${book.route}" target="_blank" rel="noreferrer">Open book folder</a>
+          </div>
         </article>
       `).join('');
     }
@@ -2341,6 +2456,18 @@
         { left: '🪑', right: 'desk' },
         { left: '📏', right: 'ruler' }
       ],
+      family: [
+        { left: '👩', right: 'mum' },
+        { left: '👨', right: 'dad' },
+        { left: '👶', right: 'baby' },
+        { left: '👧', right: 'sister' }
+      ],
+      rooms: [
+        { left: '🛏️', right: 'bedroom' },
+        { left: '🍽️', right: 'kitchen' },
+        { left: '🛁', right: 'bathroom' },
+        { left: '🌿', right: 'garden' }
+      ],
       transport: [
         { left: '🚌', right: 'bus' },
         { left: '🚗', right: 'car' },
@@ -2352,6 +2479,18 @@
         { left: '🐶', right: 'dog' },
         { left: '🐦', right: 'bird' },
         { left: '🐸', right: 'frog' }
+      ],
+      food: [
+        { left: '🍎', right: 'apple' },
+        { left: '🍞', right: 'bread' },
+        { left: '🥪', right: 'sandwich' },
+        { left: '🥛', right: 'milk' }
+      ],
+      sports: [
+        { left: '⚽', right: 'ball' },
+        { left: '🏃', right: 'run' },
+        { left: '🏊', right: 'swim' },
+        { left: '💃', right: 'dance' }
       ],
       activities: [
         { left: '🎨', right: 'draw' },
@@ -2377,7 +2516,7 @@
     }
 
     function renderMatchingBoard() {
-      const items = matchingGames[state.matchPhase];
+      const items = matchingGames[state.matchPhase] || matchingGames.classroom;
       const left = items.map((item) => `
         <button class="match-item" data-match-item="${item.right}" onclick="handleMatchPick(this)">${item.left}</button>
       `).join('');
@@ -2388,6 +2527,40 @@
         <div class="match-col"><h3>Picture</h3>${left}</div>
         <div class="match-col"><h3>Word</h3>${right}</div>
       `;
+    }
+
+    function renderAllAboutMePicture() {
+      const svg = document.getElementById('allAboutMeSvg');
+      const name = document.getElementById('allAboutMeName').value.trim() || 'Me';
+      const age = document.getElementById('allAboutMeAge').value || '6';
+      const food = document.getElementById('allAboutMeFood').value.trim() || 'pizza';
+      const colour = document.getElementById('allAboutMeColour').value.trim() || 'blue';
+
+      const colourMap = {
+        red: '#ef4444', blue: '#3b82f6', green: '#22c55e', yellow: '#facc15', purple: '#8b5cf6', pink: '#f472b6', orange: '#f59e0b', black: '#111827', white: '#f8fafc'
+      };
+      const favouriteColour = colourMap[colour.toLowerCase()] || '#3b82f6';
+
+      svg.innerHTML = `
+        <rect x="0" y="0" width="260" height="260" fill="#eff6ff"/>
+        <rect x="0" y="200" width="260" height="60" fill="#dbeafe"/>
+        <circle cx="130" cy="78" r="42" fill="#f8d4b4" stroke="#1f2937" stroke-width="2"/>
+        <path d="M96 92 Q130 52 164 92" fill="none" stroke="#1f2937" stroke-width="3"/>
+        <circle cx="112" cy="74" r="4" fill="#1f2937"/>
+        <circle cx="148" cy="74" r="4" fill="#1f2937"/>
+        <path d="M115 96 Q130 108 145 96" fill="none" stroke="#1f2937" stroke-width="3" stroke-linecap="round"/>
+        <path d="M85 118 Q130 140 175 118" fill="none" stroke="#1f2937" stroke-width="2"/>
+        <rect x="88" y="118" width="84" height="70" rx="18" fill="${favouriteColour}" stroke="#1f2937" stroke-width="2"/>
+        <path d="M110 118 L90 178" stroke="#1f2937" stroke-width="4" stroke-linecap="round"/>
+        <path d="M150 118 L170 178" stroke="#1f2937" stroke-width="4" stroke-linecap="round"/>
+        <path d="M100 188 L82 220" stroke="#1f2937" stroke-width="4" stroke-linecap="round"/>
+        <path d="M160 188 L178 220" stroke="#1f2937" stroke-width="4" stroke-linecap="round"/>
+        <text x="130" y="240" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2937">${name}</text>
+      `;
+
+      const summary = document.getElementById('allAboutMeSummary');
+      summary.textContent = `Hi! My name is ${name}. I am ${age} years old. My favourite food is ${food}. My favourite colour is ${colour}.`;
+      speakText(summary.textContent);
     }
 
     const phonicsMatchSets = {
@@ -2503,6 +2676,8 @@
       const board = document.getElementById('gameChallengeBoard');
       if (!board) return;
 
+      state.currentDraggedPicture = null;
+
       let html = '';
       if (state.gameTab === 'phonicsMatch') {
         const items = phonicsMatchSets[state.ageGroup] || phonicsMatchSets.early;
@@ -2559,14 +2734,7 @@
 
         const dropZone = board.querySelector('.drop-zone');
         if (dropZone) {
-          dropZone.addEventListener('dragover', (event) => {
-            event.preventDefault();
-            dropZone.classList.add('dragover');
-          });
-          dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-          dropZone.addEventListener('drop', (event) => {
-            event.preventDefault();
-            const option = event.dataTransfer.getData('text/plain');
+          const applyPictureDrop = (option) => {
             const answer = dropZone.dataset.pictureAnswer;
             const correct = option === answer;
             dropZone.classList.remove('dragover');
@@ -2577,13 +2745,45 @@
               awardReward('picture', 'Picture selection', '🖼️');
               speakText(option);
             }
+          };
+
+          dropZone.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dropZone.classList.add('dragover');
+          });
+          dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+          dropZone.addEventListener('drop', (event) => {
+            event.preventDefault();
+            const option = event.dataTransfer ? event.dataTransfer.getData('text/plain') || state.currentDraggedPicture || '' : state.currentDraggedPicture || '';
+            applyPictureDrop(option);
+          });
+          dropZone.addEventListener('click', () => {
+            if (state.currentDraggedPicture) applyPictureDrop(state.currentDraggedPicture);
           });
         }
 
         board.querySelectorAll('[draggable="true"]').forEach((tile) => {
           tile.addEventListener('dragstart', (event) => {
-            event.dataTransfer.setData('text/plain', tile.dataset.pictureOption);
-            event.dataTransfer.setData('application/x-picture-answer', tile.dataset.pictureAnswer);
+            state.currentDraggedPicture = tile.dataset.pictureOption || '';
+            if (event.dataTransfer) {
+              event.dataTransfer.setData('text/plain', tile.dataset.pictureOption || '');
+              event.dataTransfer.setData('application/x-picture-answer', tile.dataset.pictureAnswer || '');
+            }
+          });
+          tile.addEventListener('click', () => {
+            const answer = tile.dataset.pictureAnswer;
+            const option = tile.dataset.pictureOption;
+            state.currentDraggedPicture = option;
+            const correct = option === answer;
+            tile.classList.add(correct ? 'matched' : 'wrong');
+            tile.innerHTML = `
+              <span style="font-size:2rem; display:block;">${correct ? '✅' : '✗'} ${getPictureForWord(option)}</span>
+              <span style="font-size:0.9rem; margin-top:4px;">${option}</span>
+            `;
+            if (correct) {
+              awardReward('picture', 'Picture selection', '🖼️');
+              speakText(option);
+            }
           });
         });
       } else {
@@ -3091,8 +3291,19 @@
         return;
       }
 
-      // Browser TTS is intentionally disabled for phonics because it repeats the sound as a letter name.
-      console.warn('No recorded audio for text:', text);
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(String(text));
+        const britishVoice = getFriendlyBritishVoice();
+        if (britishVoice) utterance.voice = britishVoice;
+        utterance.rate = 0.82;
+        utterance.pitch = 1.1;
+        utterance.volume = 1;
+        window.speechSynthesis.speak(utterance);
+        return;
+      }
+
+      console.warn('No speech support available for text:', text);
     }
 
     function applyAgeGroup(ageGroup) {
@@ -3180,6 +3391,9 @@
       ];
 
       const article = articles[state.comprehensionIndex % articles.length];
+      const progress = state.comprehensionProgress[article.title] || {};
+      const allCorrect = article.questions.every((item, index) => progress[index] === true);
+
       wrap.innerHTML = `
         <div class="assignment-box">
           <div class="book-image" style="background: linear-gradient(135deg, #60a5fa, #38bdf8); min-height: 120px; font-size: 3rem;">${article.image}</div>
@@ -3190,25 +3404,63 @@
               <div style="margin-bottom:18px;">
                 <strong>${index + 1}. ${item.q}</strong>
                 <div>
-                  ${item.options.map((option) => `<button class="rhyme-option" onclick="checkReadingAnswer(this, '${item.answer}', '${option}')">${option}</button>`).join('')}
+                  ${item.options.map((option) => `
+                    <button class="rhyme-option ${progress[index] === true && option === item.answer ? 'correct' : ''}" ${progress[index] === true ? 'disabled' : ''} onclick="checkReadingAnswer(this, '${article.title}', ${index}, '${item.answer}', '${option}')">${option}</button>
+                  `).join('')}
                 </div>
               </div>
             `).join('')}
           </div>
+          ${allCorrect ? '<div class="button-row"><button class="btn success" onclick="advanceToNextStory()">Next story</button></div>' : ''}
         </div>
       `;
     }
 
-    function checkReadingAnswer(button, answer, option) {
+    function advanceToNextStory() {
+      state.comprehensionIndex += 1;
+      const article = [
+        'A Busy Morning',
+        'The Rainy Day',
+        'The Secret Garden',
+        'The Long Walk'
+      ][state.comprehensionIndex % 4];
+      if (!state.comprehensionProgress[article]) state.comprehensionProgress[article] = {};
+      renderReadingCompBoard();
+    }
+
+    function checkReadingAnswer(button, articleTitle, questionIndex, answer, option) {
+      if (!state.comprehensionProgress[articleTitle]) state.comprehensionProgress[articleTitle] = {};
+
       const correct = option === answer;
       button.classList.add(correct ? 'correct' : 'wrong');
       button.textContent = `${option}${correct ? ' ✓' : ' ✗'}`;
+      button.disabled = true;
+
       if (correct) {
-        state.comprehensionIndex += 1;
+        state.comprehensionProgress[articleTitle][questionIndex] = true;
         speakText(option);
-        setTimeout(() => renderReadingCompBoard(), 800);
       } else {
+        state.comprehensionProgress[articleTitle][questionIndex] = false;
         speakText('Try again');
+      }
+
+      const articleList = [
+        'A Busy Morning',
+        'The Rainy Day',
+        'The Secret Garden',
+        'The Long Walk'
+      ];
+      const currentArticle = articleList[state.comprehensionIndex % articleList.length];
+      const currentQuestions = [
+        { title: 'A Busy Morning', count: 3 },
+        { title: 'The Rainy Day', count: 3 },
+        { title: 'The Secret Garden', count: 3 },
+        { title: 'The Long Walk', count: 3 }
+      ].find((item) => item.title === currentArticle);
+
+      const allAnswered = currentQuestions && Object.keys(state.comprehensionProgress[currentArticle] || {}).length >= currentQuestions.count;
+      if (allAnswered) {
+        setTimeout(() => renderReadingCompBoard(), 700);
       }
     }
 
